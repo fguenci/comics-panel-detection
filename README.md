@@ -1,0 +1,1 @@
+# comics-panel-detection
