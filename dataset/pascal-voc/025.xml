@@ -1,0 +1,26 @@
+<annotation>
+	<folder>annotazioni</folder>
+	<filename>025.jpg</filename>
+	<path>../image/025.jpg</path>
+	<source>
+		<database>Unknown</database>
+	</source>
+	<size>
+		<width>900</width>
+		<height>1350</height>
+		<depth>1</depth>
+	</size>
+	<segmented>0</segmented>
+	<object>
+		<name>Vignetta</name>
+		<pose>Unspecified</pose>
+		<truncated>1</truncated>
+		<difficult>0</difficult>
+		<bndbox>
+			<xmin>1</xmin>
+			<ymin>7</ymin>
+			<xmax>900</xmax>
+			<ymax>1338</ymax>
+		</bndbox>
+	</object>
+</annotation>
