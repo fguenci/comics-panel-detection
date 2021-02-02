@@ -4,6 +4,11 @@ from xml.etree import ElementTree
 from numpy import zeros
 from numpy import asarray
 from mrcnn.utils import Dataset
+from numpy import expand_dims
+from numpy import mean
+from mrcnn.utils import compute_ap
+from mrcnn.model import load_image_gt
+from mrcnn.model import mold_image
 
 # class that defines and loads the kangaroo dataset
 class ComicsDataset(Dataset):
@@ -78,3 +83,24 @@ class ComicsDataset(Dataset):
 	def image_reference(self, image_id):
 		info = self.image_info[image_id]
 		return info['path']
+
+	def evaluate_model(self, dataset, model, cfg):
+		APs = list()
+		for image_id in dataset.image_ids:
+			# load image, bounding boxes and masks for the image id
+			image, image_meta, gt_class_id, gt_bbox, gt_mask = load_image_gt(dataset, cfg, image_id)
+			# convert pixel values (e.g. center)
+			scaled_image = mold_image(image, cfg)
+			# convert image into one sample
+			sample = expand_dims(scaled_image, 0)
+			# make prediction
+			yhat = model.detect(sample, verbose=0)
+			# extract results for first sample
+			r = yhat[0]
+			# calculate statistics, including AP
+			AP, _, _, _ = compute_ap(gt_bbox, gt_class_id, gt_mask, r["rois"], r["class_ids"], r["scores"], r['masks'])
+			# store
+			APs.append(AP)
+		# calculate the mean AP across all images
+		mAP = mean(APs)
+		return mAP
