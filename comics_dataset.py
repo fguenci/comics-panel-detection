@@ -9,6 +9,8 @@ from numpy import mean
 from mrcnn.utils import compute_ap
 from mrcnn.model import load_image_gt
 from mrcnn.model import mold_image
+from matplotlib import pyplot
+from matplotlib.patches import Rectangle
 
 # class that defines and loads the kangaroo dataset
 class ComicsDataset(Dataset):
@@ -72,11 +74,17 @@ class ComicsDataset(Dataset):
 		# create masks
 		class_ids = list()
 		for i in range(len(boxes)):
-			box = boxes[i]
-			row_s, row_e = box[1], box[3]
-			col_s, col_e = box[0], box[2]
-			masks[row_s:row_e, col_s:col_e, i] = 1
-			class_ids.append(self.class_names.index(box[4]))
+			box = None
+			try:
+				box = boxes[i]
+				row_s, row_e = box[1], box[3]
+				col_s, col_e = box[0], box[2]
+				masks[row_s:row_e, col_s:col_e, i] = 1
+				class_ids.append(self.class_names.index(box[4]))
+			except:
+				print(self.image_info[image_id])
+				print(box)
+
 		return masks, asarray(class_ids, dtype='int32')
 
 	# load an image reference
@@ -104,3 +112,43 @@ class ComicsDataset(Dataset):
 		# calculate the mean AP across all images
 		mAP = mean(APs)
 		return mAP
+	
+	# plot a number of photos with ground truth and predictions
+	def plot_actual_vs_predicted(self, dataset, model, cfg, n_images=5):
+		# load image and mask
+		for i in range(n_images):
+			# load the image and mask
+			image = dataset.load_image(i)
+			mask, _ = dataset.load_mask(i)
+			# convert pixel values (e.g. center)
+			scaled_image = mold_image(image, cfg)
+			# convert image into one sample
+			sample = expand_dims(scaled_image, 0)
+			# make prediction
+			yhat = model.detect(sample, verbose=0)[0]
+			# define subplot
+			pyplot.subplot(n_images, 2, i*2+1)
+			# plot raw pixel data
+			pyplot.imshow(image)
+			pyplot.title('Actual')
+			# plot masks
+			for j in range(mask.shape[2]):
+				pyplot.imshow(mask[:, :, j], cmap='gray', alpha=0.3)
+			# get the context for drawing boxes
+			pyplot.subplot(n_images, 2, i*2+2)
+			# plot raw pixel data
+			pyplot.imshow(image)
+			pyplot.title('Predicted')
+			ax = pyplot.gca()
+			# plot each box
+			for box in yhat['rois']:
+				# get coordinates
+				y1, x1, y2, x2 = box
+				# calculate width and height of the box
+				width, height = x2 - x1, y2 - y1
+				# create the shape
+				rect = Rectangle((x1, y1), width, height, fill=False, color='red')
+				# draw the box
+				ax.add_patch(rect)
+		# show the figure
+		pyplot.show()

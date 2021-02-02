@@ -96,7 +96,7 @@
 		</bndbox>
 	</object>
 	<object>
-		<name>None</name>
+		<name>Baloon</name>
 		<pose>Unspecified</pose>
 		<truncated>0</truncated>
 		<difficult>0</difficult>

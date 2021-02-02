@@ -21,10 +21,19 @@ cfg = ComicsEvaluate()
 # define the model
 model = MaskRCNN(mode='inference', model_dir='./', config=cfg)
 # load model weights
-model.load_weights('coco-model/mask_rcnn_comics_cfg_0005.h5', by_name=True)
-# evaluate model on training dataset
+#model.load_weights('coco-model/mask_rcnn_comics_cfg_0005.h5', by_name=True)
+
+""" # evaluate model on training dataset
 train_mAP = train_set.evaluate_model(train_set, model, cfg)
 print("Train mAP: %.3f" % train_mAP)
 # evaluate model on test dataset
 test_mAP = train_set.evaluate_model(test_set, model, cfg)
-print("Test mAP: %.3f" % test_mAP)
+print("Test mAP: %.3f" % test_mAP) """
+
+# load model weights
+model_path = 'coco-model/mask_rcnn_comics_cfg_0005.h5'
+model.load_weights(model_path, by_name=True)
+# plot predictions for train dataset
+train_set.plot_actual_vs_predicted(train_set, model, cfg)
+# plot predictions for test dataset
+test_set.plot_actual_vs_predicted(test_set, model, cfg)
