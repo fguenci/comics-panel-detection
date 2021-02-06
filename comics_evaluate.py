@@ -1,4 +1,4 @@
-from mrcnn.config import Config
+from comics_panel_detection.mrcnn.config import Config
 
 # define the prediction configuration
 class ComicsEvaluate(Config):

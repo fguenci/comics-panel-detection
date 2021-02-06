@@ -3,12 +3,12 @@ from os import listdir
 from xml.etree import ElementTree
 from numpy import zeros
 from numpy import asarray
-from mrcnn.utils import Dataset
+from comics_panel_detection.mrcnn.utils import Dataset
 from numpy import expand_dims
 from numpy import mean
-from mrcnn.utils import compute_ap
-from mrcnn.model import load_image_gt
-from mrcnn.model import mold_image
+from comics_panel_detection.mrcnn.utils import compute_ap
+from comics_panel_detection.mrcnn.model import load_image_gt
+from comics_panel_detection.mrcnn.model import mold_image
 from matplotlib import pyplot
 from matplotlib.patches import Rectangle
 
@@ -29,10 +29,10 @@ class ComicsDataset(Dataset):
 			image_id = filename[:-4]
 			count += 1
 			# skip all images after 150 if we are building the train set
-			if is_train and count >= 100:
+			if is_train and count >= 171:
 				continue
 			# skip all images before 150 if we are building the test/val set
-			if not is_train and count < 100:
+			if not is_train and count < 171:
 				continue
 			img_path = images_dir + filename
 			ann_path = annotations_dir + image_id + '.xml'

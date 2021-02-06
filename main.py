@@ -1,6 +1,6 @@
 from comics_dataset import ComicsDataset
 from comics_config import ComicsConfig
-from mrcnn.model import MaskRCNN
+from comics_panel_detection.mrcnn.model import MaskRCNN
 import tensorflow as tf
 import os
 
