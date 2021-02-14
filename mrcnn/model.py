@@ -23,7 +23,7 @@ import tensorflow.keras.utils as KU
 from tensorflow.python.eager import context
 import tensorflow.keras.models as KM
 
-from comics_panel_detection.mrcnn import utils
+from mrcnn import utils
 
 # Requires TensorFlow 2.0+
 from distutils.version import LooseVersion
@@ -2361,6 +2361,9 @@ class MaskRCNN(object):
         else:
             workers = multiprocessing.cpu_count()
 
+        print('Workers: ' + str(workers))
+        workers = 0
+        
         self.keras_model.fit(
             train_generator,
             initial_epoch=self.epoch,
