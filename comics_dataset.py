@@ -11,81 +11,120 @@ from comics_panel_detection.mrcnn.model import load_image_gt
 from comics_panel_detection.mrcnn.model import mold_image
 from matplotlib import pyplot
 from matplotlib.patches import Rectangle
+import os
+import fnmatch
+from skimage import draw
+
+
 
 # class that defines and loads the kangaroo dataset
 class ComicsDataset(Dataset):
 	# load the dataset definitions
 	def load_dataset(self, dataset_dir, is_train=True):
+		
+		def extract_polygon():
+			# load and parse the file
+			tree = ElementTree.parse(ann_path)
+			# get the root of the document
+			root = tree.getroot()
+			if 'svg' not in root.tag:
+				width, height, polygons = loadFromXml(root)
+			else:
+				width, height, polygons = loadFromSvg()
+
+			return width, height, polygons
+
+		def loadFromXml(root):
+			polygons = []
+			for obj in root.findall('.//object'):
+				label = obj.find('name').text
+				box = obj.find('bndbox')
+				xmin = int(box.find('xmin').text)
+				ymin = int(box.find('ymin').text)
+				xmax = int(box.find('xmax').text)
+				ymax = int(box.find('ymax').text)
+				allX = [xmin, xmin, xmax, xmax]
+				allY = [ymin, ymax, ymin, ymax]
+				polygons.append({'all_points_x': allX, 'all_points_y': allY, 'label':label})
+			# extract image dimensions
+			width = int(root.find('.//size/width').text)
+			height = int(root.find('.//size/height').text)
+			return width, height, polygons
+
+		def loadFromSvg():
+			from xml.dom.minidom import parse
+
+			polygons = []
+			xmldoc = parse(ann_path)
+			image = xmldoc.getElementsByTagName('image') 
+			width = int(image[0].attributes['width'].value)
+			height = int(image[0].attributes['height'].value)
+
+			itemlist = xmldoc.getElementsByTagName('polygon') 
+				
+			for s in itemlist :
+				label = s.parentNode.attributes['class'].value
+				if label == 'Panel':
+					label = 'Vignetta'
+				elif label == 'Balloon':
+					label = 'Baloon'
+				else:
+					continue
+				xList = []
+				yList = []				
+				points = s.attributes['points'].value
+				coords = points.split(' ')          
+				#Compute bounding box
+				for c in coords:
+					pts = c.split(',')
+					xList.append(int(pts[0]))
+					yList.append(int(pts[1]))  
+				polygons.append({'all_points_x': xList, 'all_points_y': yList, 'label':label})
+			return width, height, polygons
+
 		# define one class
 		self.add_class("dataset", 1, "Vignetta")
 		self.add_class("dataset", 2, "Baloon")
 		# define data locations
-		images_dir = dataset_dir + '/image/'
-		annotations_dir = dataset_dir + '/pascal-voc/'
-		count = 0
-		# find all images
-		for filename in listdir(images_dir):
-			# extract image id
-			image_id = filename[:-4]
-			count += 1
-			# skip all images after 150 if we are building the train set
-			if is_train and count >= 171:
-				continue
-			# skip all images before 150 if we are building the test/val set
-			if not is_train and count < 171:
-				continue
-			img_path = images_dir + filename
-			ann_path = annotations_dir + image_id + '.xml'
-			# add to dataset
-			self.add_image('dataset', image_id=count, path=img_path, annotation=ann_path)
-
-	# extract bounding boxes from an annotation file
-	def extract_boxes(self, filename):
-		# load and parse the file
-		tree = ElementTree.parse(filename)
-		# get the root of the document
-		root = tree.getroot()
-		# extract each bounding box
-		boxes = list()
-		for obj in root.findall('.//object'):
-			label = obj.find('name').text
-			box = obj.find('bndbox')
-			xmin = int(box.find('xmin').text)
-			ymin = int(box.find('ymin').text)
-			xmax = int(box.find('xmax').text)
-			ymax = int(box.find('ymax').text)
-			coors = [xmin, ymin, xmax, ymax, label]
-			boxes.append(coors)
-		# extract image dimensions
-		width = int(root.find('.//size/width').text)
-		height = int(root.find('.//size/height').text)
-		return boxes, width, height
-
+		for path, dirs, files in os.walk(dataset_dir):
+			num_files = len(fnmatch.filter(files,'*.xml'))
+			count = 0
+			for f in fnmatch.filter(files,'*.xml'):
+				image_path = path.replace('groundtruth', 'image')
+				image_id = os.path.relpath(os.path.join(image_path,f[:-3]+'jpg'))
+				ann_path = os.path.relpath(os.path.join(path,f))
+				count += 1
+				# skip all images after 150 if we are building the train set
+				if is_train and count >= (num_files * 0.8):
+					continue
+				# skip all images before 150 if we are building the test/val set
+				if not is_train and count < (num_files * 0.8):
+					continue
+				# add to dataset
+				width, height, polygons = extract_polygon()
+				self.add_image('dataset', 
+				               image_id=image_id, 
+							   path=image_id, 
+							   annotation=ann_path,
+							   width=width, 
+							   height=height,
+							   polygons=polygons)
+    	
 	# load the masks for an image
 	def load_mask(self, image_id):
 		# get details of image
 		info = self.image_info[image_id]
-		# define box file location
-		path = info['annotation']
-		# load XML
-		boxes, w, h = self.extract_boxes(path)
 		# create one array for all masks, each on a different channel
-		masks = zeros([h, w, len(boxes)], dtype='uint8')
+		mask = zeros([info["height"], info["width"], len(info["polygons"])], dtype='uint8')
 		# create masks
 		class_ids = list()
-		for i in range(len(boxes)):
-			box = None
-			try:
-				box = boxes[i]
-				row_s, row_e = box[1], box[3]
-				col_s, col_e = box[0], box[2]
-				masks[row_s:row_e, col_s:col_e, i] = 1
-				class_ids.append(self.class_names.index(box[4]))
-			except:
-				print(self.image_info[image_id])
-				print(box)
+		for i, p in enumerate(info["polygons"]):
+			# Get indexes of pixels inside the polygon and set them to 1
+			rr, cc = draw.polygon(p['all_points_y'], p['all_points_x'])
+			class_ids.append(self.class_names.index(p['label']))
+			mask[rr, cc, i] = 1
 
-		return masks, asarray(class_ids, dtype='int32')
+		return mask, asarray(class_ids, dtype='int32')
 
 	# load an image reference
 	def image_reference(self, image_id):
@@ -117,6 +156,7 @@ class ComicsDataset(Dataset):
 	def plot_actual_vs_predicted(self, dataset, model, cfg, n_images=5):
 		# load image and mask
 		for i in range(n_images):
+			info = self.image_info[i]['path']
 			# load the image and mask
 			image = dataset.load_image(i)
 			mask, _ = dataset.load_mask(i)
@@ -130,7 +170,7 @@ class ComicsDataset(Dataset):
 			pyplot.subplot(n_images, 2, i*2+1)
 			# plot raw pixel data
 			pyplot.imshow(image)
-			pyplot.title('Actual')
+			pyplot.title('Actual -> ' + info)
 			# plot masks
 			for j in range(mask.shape[2]):
 				pyplot.imshow(mask[:, :, j], cmap='gray', alpha=0.3)
@@ -152,3 +192,28 @@ class ComicsDataset(Dataset):
 				ax.add_patch(rect)
 		# show the figure
 		pyplot.show()
+
+""" 	def train(self, disable_gpu = False):
+		
+		if (disable_gpu):
+			os.environ["CUDA_VISIBLE_DEVICES"] = "-1"
+		
+		# train set
+		train_set = ComicsDataset()
+		train_set.load_dataset('dataset', is_train=True)
+		train_set.prepare()
+		print('Train: %d' % len(train_set.image_ids))
+		# test/val set
+		test_set = ComicsDataset()
+		test_set.load_dataset('dataset', is_train=False)
+		test_set.prepare()
+		print('Test: %d' % len(test_set.image_ids))
+		# prepare config
+		config = ComicsConfig()
+		config.display()
+		# define the model
+		model = MaskRCNN(mode='training', model_dir='./', config=config)
+		# load weights (mscoco) and exclude the output layers
+		model.load_weights('coco-model/mask_rcnn_coco.h5', by_name=True, exclude=["mrcnn_class_logits", "mrcnn_bbox_fc",  "mrcnn_bbox", "mrcnn_mask"])
+		# train weights (output layers or 'heads')
+		model.train(train_set, test_set, learning_rate=config.LEARNING_RATE, epochs=5, layers='heads') """
