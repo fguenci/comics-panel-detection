@@ -3,7 +3,7 @@ from os import listdir
 from xml.etree import ElementTree
 from numpy import zeros
 from numpy import asarray
-from comics_panel_detection.mrcnn.utils import Dataset
+from mrcnn.utils import Dataset
 from numpy import expand_dims
 from numpy import mean
 from comics_panel_detection.mrcnn.utils import compute_ap
@@ -92,7 +92,13 @@ class ComicsDataset(Dataset):
 			for f in fnmatch.filter(files,'*.xml'):
 				image_path = path.replace('groundtruth', 'image')
 				image_id = os.path.relpath(os.path.join(image_path,f[:-3]+'jpg'))
+				if not os.path.exists(image_id):
+					image_id = image_id[:-3]+'png'
+				if not os.path.exists(image_id):
+					raise FileNotFoundError("load_dataset - No such file: '%s'" % image_id)
 				ann_path = os.path.relpath(os.path.join(path,f))
+				print('load_dataset - image file     : ' + image_id)
+				print('load_dataset - annotation file: ' + ann_path)
 				count += 1
 				# skip all images after 150 if we are building the train set
 				if is_train and count >= (num_files * 0.8):
