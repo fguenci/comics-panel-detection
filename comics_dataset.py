@@ -1,20 +1,20 @@
 # split into train and test set
-from os import listdir
+from os import error, listdir
 from xml.etree import ElementTree
 from numpy import zeros
 from numpy import asarray
 from mrcnn.utils import Dataset
 from numpy import expand_dims
 from numpy import mean
-from comics_panel_detection.mrcnn.utils import compute_ap
-from comics_panel_detection.mrcnn.model import load_image_gt
-from comics_panel_detection.mrcnn.model import mold_image
+from mrcnn.utils import compute_ap
+from mrcnn.model import load_image_gt
+from mrcnn.model import mold_image
 from matplotlib import pyplot
 from matplotlib.patches import Rectangle
 import os
 import fnmatch
 from skimage import draw
-
+from pprint import pprint
 
 
 # class that defines and loads the kangaroo dataset
@@ -120,6 +120,7 @@ class ComicsDataset(Dataset):
 	def load_mask(self, image_id):
 		# get details of image
 		info = self.image_info[image_id]
+		print()
 		# create one array for all masks, each on a different channel
 		mask = zeros([info["height"], info["width"], len(info["polygons"])], dtype='uint8')
 		# create masks
@@ -127,8 +128,15 @@ class ComicsDataset(Dataset):
 		for i, p in enumerate(info["polygons"]):
 			# Get indexes of pixels inside the polygon and set them to 1
 			rr, cc = draw.polygon(p['all_points_y'], p['all_points_x'])
-			class_ids.append(self.class_names.index(p['label']))
-			mask[rr, cc, i] = 1
+			try:
+				class_ids.append(self.class_names.index(p['label']))
+				mask[rr, cc, i] = 1
+			except ValueError as error:
+				pprint(p)
+				pprint(class_ids)
+				pprint(self.class_names)
+				print('File: ' + info["annotation"])
+				raise error
 
 		return mask, asarray(class_ids, dtype='int32')
 
