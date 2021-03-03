@@ -1,0 +1,191 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" contentScriptType="text/ecmascript" width="977mm" zoomAndPan="magnify" contentStyleType="text/css" height="1335mm" viewBox="0 0 1955 2670" preserveAspectRatio="xMidYMid meet" version="1.0">
+    <title>ROUDIER_LESTERRESCREUSEES_017</title>
+    <svg contentScriptType="text/ecmascript" zoomAndPan="magnify" contentStyleType="text/css" class="Page" preserveAspectRatio="xMidYMid meet" version="1.0">
+        <image x="0" y="0" fill-opacity="0.5" width="1955" xlink:href="../Pages/ROUDIER_LESTERRESCREUSEES_017.jpg" xlink:type="simple" xlink:actuate="onLoad" height="2670" opacity="0.5" preserveAspectRatio="xMidYMid meet" xlink:show="embed"/>
+        <metadata collectionTitle="Actes Sud BD" editorName="Actes Sud" doublePage="false" website="" albumTitle="Les Terres Creusées" drawerName="Nicolas Roudier" language="french" resolution="600" ISBN="978-2742795611" readingDirection="leftToRight" writerName="Nicolas Roudier" releaseDate="2011" pageNumber="17"/>
+    </svg>
+	<style type="text/css" xml:space="preserve">
+        * { stroke-width: 0; stroke-linejoin: round; }
+        .Unclassified { fill: orange; stroke: none; opacity: 1.0; visibility: hidden; }
+        .Noise { fill: pink; stroke: none; opacity: 0.2; visibility: hidden; }
+        .Panel { fill: red; stroke: none; opacity: 0.3; visibility: visible; image-rendering: optimizeSpeed; }
+        .Line { fill: green; stroke: none; opacity: 0.5; visibility: visible; image-rendering: optimizeSpeed; }
+        .TextArea { fill: grey; stroke: none; opacity: 0.2; visibility: visible; image-rendering: optimizeSpeed; }
+        .Balloon { fill: cyan; stroke: none; opacity: 0.5; visibility: visible; image-rendering: optimizeSpeed; }
+        .Letter { fill: blue; stroke: none; opacity: 0.2; visibility: hidden; }
+        .Character { fill: yellow; stroke: none; opacity: 0.3; visibility: visible; image-rendering: optimizeSpeed; }
+        .Page { fill: white; stroke: none; opacity: 0.5; visibility: visible; }
+        .linkSBSC { fill: blue; stroke: none; opacity: 0.5; visibility: visible; }
+        polygon:hover { stroke:red;stroke-width:2; } 
+    </style><svg contentScriptType="text/ecmascript" zoomAndPan="magnify" contentStyleType="text/css" class="Panel" preserveAspectRatio="xMidYMid meet" version="1.0">
+        <polygon points="0,0 1955,0 1955,2666 0,2666 0,0" id="ROUDIER_LESTERRESCREUSEES_017_panel_0">
+            <metadata viewAngle="" shot="" rank="1"/>
+        </polygon>
+    </svg>
+    <svg contentScriptType="text/ecmascript" zoomAndPan="magnify" contentStyleType="text/css" class="TextArea" preserveAspectRatio="xMidYMid meet" version="1.0"/>
+    <svg contentScriptType="text/ecmascript" zoomAndPan="magnify" contentStyleType="text/css" class="Balloon" preserveAspectRatio="xMidYMid meet" version="1.0">
+        <polygon points="718,90 743,42 771,24 806,16 952,15 1049,14 1116,12 1150,24 1177,49 1193,78 1201,101 1202,124 1197,149 1183,170 1153,192 1104,201 1028,202 977,203 909,202 874,203 852,223 823,240 799,245 779,243 767,237 735,229 739,222 755,226 776,231 791,232 811,224 828,215 836,203 810,200 765,192 748,182 731,165 720,142 716,107 718,90" id="ROUDIER_LESTERRESCREUSEES_017_balloon_0">
+            <metadata borderStyle="smooth" tailTip="735,229" boundingBox="" tailDirection="W" rank="1"/>
+        </polygon>
+        <polygon points="895,295 971,290 1046,290 1086,302 1107,325 1116,348 1120,377 1116,420 1101,462 1062,485 1012,495 956,497 912,494 869,490 847,480 816,434 811,403 813,376 821,349 834,333 820,313 797,295 775,285 755,260 764,262 772,275 784,281 807,283 825,288 838,298 849,307 895,295" id="ROUDIER_LESTERRESCREUSEES_017_balloon_1">
+            <metadata borderStyle="smooth" tailTip="755,260" boundingBox="" tailDirection="NW" rank="2"/>
+        </polygon>
+        <polygon points="1254,288 1380,281 1426,286 1446,265 1474,252 1505,246 1523,244 1553,233 1550,241 1513,260 1481,271 1465,288 1503,296 1538,311 1569,340 1589,378 1591,415 1588,467 1561,523 1377,563 1274,562 1213,553 1173,531 1143,491 1128,443 1128,395 1145,346 1174,317 1254,288" id="ROUDIER_LESTERRESCREUSEES_017_balloon_2">
+            <metadata borderStyle="smooth" tailTip="1553,233" boundingBox="" tailDirection="NE" rank="3"/>
+        </polygon>
+        <polygon points="1374,570 1395,549 1437,527 1472,519 1527,519 1590,519 1638,514 1691,511 1704,516 1710,508 1713,467 1697,417 1679,386 1667,339 1672,330 1679,353 1693,392 1714,417 1729,448 1739,481 1739,513 1742,527 1778,547 1804,575 1820,610 1830,640 1829,674 1811,713 1776,748 1718,777 1647,788 1574,788 1492,781 1435,760 1382,723 1355,683 1347,643 1353,600 1374,570" id="ROUDIER_LESTERRESCREUSEES_017_balloon_3">
+            <metadata borderStyle="smooth" tailTip="1672,330" boundingBox="" tailDirection="N" rank="4"/>
+        </polygon>
+        <polygon points="889,596 979,591 1090,591 1147,595 1193,610 1235,654 1237,702 1152,794 1090,800 1088,814 1088,847 1101,881 1121,899 1144,912 1110,906 1080,891 1066,868 1056,831 1048,801 949,800 893,791 833,764 805,737 791,703 793,665 811,638 846,612 889,596" id="ROUDIER_LESTERRESCREUSEES_017_balloon_4">
+            <metadata borderStyle="smooth" tailTip="1144,912" boundingBox="" tailDirection="SE" rank="5"/>
+        </polygon>
+        <polygon points="676,1082 727,1049 778,1036 832,1035 882,1043 941,1063 965,1041 999,1019 1044,1006 1080,993 1115,974 1141,958 1128,977 1081,1010 1048,1028 1019,1046 986,1077 969,1090 983,1111 990,1144 990,1180 970,1210 945,1233 890,1258 835,1264 768,1261 691,1238 657,1203 650,1157 651,1108 676,1082" id="ROUDIER_LESTERRESCREUSEES_017_balloon_5">
+            <metadata borderStyle="smooth" tailTip="1141,958" boundingBox="" tailDirection="NE" rank="6"/>
+        </polygon>
+        <polygon points="1036,1694 993,1659 967,1611 969,1551 986,1512 1041,1476 1081,1460 1154,1458 1296,1460 1409,1457 1482,1464 1520,1482 1559,1514 1572,1550 1574,1591 1563,1636 1519,1668 1559,1664 1666,1670 1759,1690 1801,1713 1832,1749 1846,1775 1850,1821 1837,1869 1824,1897 1800,1906 1802,1930 1797,1952 1777,1989 1759,2009 1754,1990 1771,1962 1772,1931 1770,1918 1712,1929 1608,1937 1484,1946 1371,1940 1301,1912 1242,1855 1227,1802 1230,1769 1242,1740 1258,1722 1291,1702 1179,1711 1095,1706 1036,1694" id="ROUDIER_LESTERRESCREUSEES_017_balloon_6">
+            <metadata borderStyle="smooth" tailTip="1759,2009" boundingBox="" tailDirection="SW" rank="7"/>
+        </polygon>
+        <polygon points="441,2446 524,2445 601,2449 642,2466 664,2492 676,2526 678,2559 665,2588 651,2614 618,2626 573,2632 515,2636 441,2640 368,2641 323,2633 283,2590 277,2560 282,2529 294,2498 315,2477 352,2461 390,2451 398,2414 409,2387 425,2358 444,2341 460,2314 468,2315 457,2334 440,2366 431,2400 432,2437 441,2446" id="ROUDIER_LESTERRESCREUSEES_017_balloon_7">
+            <metadata borderStyle="smooth" tailTip="460,2314" boundingBox="" tailDirection="NE" rank="8"/>
+        </polygon>
+    </svg>
+    <svg contentScriptType="text/ecmascript" zoomAndPan="magnify" contentStyleType="text/css" class="Character" preserveAspectRatio="xMidYMid meet" version="1.0">
+        <polygon points="589,116 761,116 761,688 589,688 589,116" id="ROUDIER_LESTERRESCREUSEES_017_character_0">
+            <metadata uri="" area="" fillingPcent=""/>
+        </polygon>
+        <polygon points="213,288 658,288 658,1177 213,1177 213,288" id="ROUDIER_LESTERRESCREUSEES_017_character_1">
+            <metadata uri="" area="" fillingPcent=""/>
+        </polygon>
+        <polygon points="1328,59 1787,59 1787,632 1328,632 1328,59" id="ROUDIER_LESTERRESCREUSEES_017_character_2">
+            <metadata uri="" area="" fillingPcent=""/>
+        </polygon>
+        <polygon points="1269,784 1765,784 1765,1584 1269,1584 1269,784" id="ROUDIER_LESTERRESCREUSEES_017_character_3">
+            <metadata uri="" area="" fillingPcent=""/>
+        </polygon>
+        <polygon points="1053,656 1497,656 1497,1368 1053,1368 1053,656" id="ROUDIER_LESTERRESCREUSEES_017_character_4">
+            <metadata uri="" area="" fillingPcent=""/>
+        </polygon>
+        <polygon points="363,1275 891,1275 891,1903 363,1903 363,1275" id="ROUDIER_LESTERRESCREUSEES_017_character_5">
+            <metadata uri="" area="" fillingPcent=""/>
+        </polygon>
+        <polygon points="110,1820 1014,1820 1014,2684 110,2684 110,1820" id="ROUDIER_LESTERRESCREUSEES_017_character_6">
+            <metadata uri="" area="" fillingPcent=""/>
+        </polygon>
+        <polygon points="1100,1798 1814,1798 1814,2679 1100,2679 1100,1798" id="ROUDIER_LESTERRESCREUSEES_017_character_7">
+            <metadata uri="" area="" fillingPcent=""/>
+        </polygon>
+    </svg>
+    <svg contentScriptType="text/ecmascript" zoomAndPan="magnify" contentStyleType="text/css" class="Line" preserveAspectRatio="xMidYMid meet" version="1.0">
+        <polygon points="787,47 1134,47 1134,91 787,91 787,47" id="ROUDIER_LESTERRESCREUSEES_017_line_0">
+            <metadata method="" typography="" idBalloon="ROUDIER_LESTERRESCREUSEES_017_balloon_0" textType="speech">Croyez-en mon expé-</metadata>
+        </polygon>
+        <polygon points="759,88 1164,88 1164,131 759,131 759,88" id="ROUDIER_LESTERRESCREUSEES_017_line_1">
+            <metadata method="" typography="" idBalloon="ROUDIER_LESTERRESCREUSEES_017_balloon_0" textType="speech">rience, il va en chier votre</metadata>
+        </polygon>
+        <polygon points="801,131 1122,131 1122,165 801,165 801,131" id="ROUDIER_LESTERRESCREUSEES_017_line_2">
+            <metadata method="" typography="" idBalloon="ROUDIER_LESTERRESCREUSEES_017_balloon_0" textType="speech">homme à tout faire</metadata>
+        </polygon>
+        <polygon points="855,329 1075,329 1075,370 855,370 855,329" id="ROUDIER_LESTERRESCREUSEES_017_line_3">
+            <metadata method="" typography="" idBalloon="ROUDIER_LESTERRESCREUSEES_017_balloon_1" textType="speech">Il est costaud,</metadata>
+        </polygon>
+        <polygon points="853,369 1077,369 1077,412 853,412 853,369" id="ROUDIER_LESTERRESCREUSEES_017_line_4">
+            <metadata method="" typography="" idBalloon="ROUDIER_LESTERRESCREUSEES_017_balloon_1" textType="speech">mais n'est pas</metadata>
+        </polygon>
+        <polygon points="841,410 1088,410 1088,455 841,455 841,410" id="ROUDIER_LESTERRESCREUSEES_017_line_5">
+            <metadata method="" typography="" idBalloon="ROUDIER_LESTERRESCREUSEES_017_balloon_1" textType="speech">videur qui veut.</metadata>
+        </polygon>
+        <polygon points="1185,341 1531,341 1531,381 1185,381 1185,341" id="ROUDIER_LESTERRESCREUSEES_017_line_6">
+            <metadata method="" typography="" idBalloon="ROUDIER_LESTERRESCREUSEES_017_balloon_2" textType="speech">Il faut être du métier,</metadata>
+        </polygon>
+        <polygon points="1158,381 1559,381 1559,432 1158,432 1158,381" id="ROUDIER_LESTERRESCREUSEES_017_line_7">
+            <metadata method="" typography="" idBalloon="ROUDIER_LESTERRESCREUSEES_017_balloon_2" textType="speech">moi je suis du métier, lui,</metadata>
+        </polygon>
+        <polygon points="1177,423 1543,423 1543,472 1177,472 1177,423" id="ROUDIER_LESTERRESCREUSEES_017_line_8">
+            <metadata method="" typography="" idBalloon="ROUDIER_LESTERRESCREUSEES_017_balloon_2" textType="speech">non. Regardez-le, il ne</metadata>
+        </polygon>
+        <polygon points="1177,468 1546,468 1546,514 1177,514 1177,468" id="ROUDIER_LESTERRESCREUSEES_017_line_9">
+            <metadata method="" typography="" idBalloon="ROUDIER_LESTERRESCREUSEES_017_balloon_2" textType="speech">tiendra jamais le coup.</metadata>
+        </polygon>
+        <polygon points="1437,552 1740,552 1740,597 1437,597 1437,552" id="ROUDIER_LESTERRESCREUSEES_017_line_10">
+            <metadata method="" typography="" idBalloon="ROUDIER_LESTERRESCREUSEES_017_balloon_3" textType="speech">Vou verrez, quand</metadata>
+        </polygon>
+        <polygon points="1409,596 1772,596 1772,638 1409,638 1409,596" id="ROUDIER_LESTERRESCREUSEES_017_line_11">
+            <metadata method="" typography="" idBalloon="ROUDIER_LESTERRESCREUSEES_017_balloon_3" textType="speech">il n'en pourra plus vous</metadata>
+        </polygon>
+        <polygon points="1427,636 1754,636 1754,678 1427,678 1427,636" id="ROUDIER_LESTERRESCREUSEES_017_line_12">
+            <metadata method="" typography="" idBalloon="ROUDIER_LESTERRESCREUSEES_017_balloon_3" textType="speech">ne viendrez pas vou</metadata>
+        </polygon>
+        <polygon points="1411,676 1769,676 1769,720 1411,720 1411,676" id="ROUDIER_LESTERRESCREUSEES_017_line_13">
+            <metadata method="" typography="" idBalloon="ROUDIER_LESTERRESCREUSEES_017_balloon_3" textType="speech">plaindre. Je vous aurai</metadata>
+        </polygon>
+        <polygon points="1526,720 1658,720 1658,760 1526,760 1526,720" id="ROUDIER_LESTERRESCREUSEES_017_line_14">
+            <metadata method="" typography="" idBalloon="ROUDIER_LESTERRESCREUSEES_017_balloon_3" textType="speech">prévenu.</metadata>
+        </polygon>
+        <polygon points="935,621 1084,621 1084,657 935,657 935,621" id="ROUDIER_LESTERRESCREUSEES_017_line_15">
+            <metadata method="" typography="" idBalloon="ROUDIER_LESTERRESCREUSEES_017_balloon_4" textType="speech">Pour faire</metadata>
+        </polygon>
+        <polygon points="835,674 1184,674 1184,716 835,716 835,674" id="ROUDIER_LESTERRESCREUSEES_017_line_16">
+            <metadata method="" typography="" idBalloon="ROUDIER_LESTERRESCREUSEES_017_balloon_4" textType="speech">correctement un trou,</metadata>
+        </polygon>
+        <polygon points="877,715 1139,715 1139,752 877,752 877,715" id="ROUDIER_LESTERRESCREUSEES_017_line_17">
+            <metadata method="" typography="" idBalloon="ROUDIER_LESTERRESCREUSEES_017_balloon_4" textType="speech">il faut être deux.</metadata>
+        </polygon>
+        <polygon points="763,1086 870,1086 870,1129 763,1129 763,1086" id="ROUDIER_LESTERRESCREUSEES_017_line_18">
+            <metadata method="" typography="" idBalloon="ROUDIER_LESTERRESCREUSEES_017_balloon_5" textType="speech">Un qui</metadata>
+        </polygon>
+        <polygon points="716,1134 919,1134 919,1164 716,1164 716,1134" id="ROUDIER_LESTERRESCREUSEES_017_line_19">
+            <metadata method="" typography="" idBalloon="ROUDIER_LESTERRESCREUSEES_017_balloon_5" textType="speech">creuse et un</metadata>
+        </polygon>
+        <polygon points="750,1173 885,1173 885,1219 750,1219 750,1173" id="ROUDIER_LESTERRESCREUSEES_017_line_20">
+            <metadata method="" typography="" idBalloon="ROUDIER_LESTERRESCREUSEES_017_balloon_5" textType="speech">qui vide.</metadata>
+        </polygon>
+        <polygon points="1089,1494 1451,1494 1451,1536 1089,1536 1089,1494" id="ROUDIER_LESTERRESCREUSEES_017_line_21">
+            <metadata method="" typography="" idBalloon="ROUDIER_LESTERRESCREUSEES_017_balloon_6" textType="speech">Et un bon videur, c'est</metadata>
+        </polygon>
+        <polygon points="1054,1537 1485,1537 1485,1583 1054,1583 1054,1537" id="ROUDIER_LESTERRESCREUSEES_017_line_22">
+            <metadata method="" typography="" idBalloon="ROUDIER_LESTERRESCREUSEES_017_balloon_6" textType="speech">quelqu'un qui sait soulever</metadata>
+        </polygon>
+        <polygon points="1089,1580 1450,1580 1450,1625 1089,1625 1089,1580" id="ROUDIER_LESTERRESCREUSEES_017_line_23">
+            <metadata method="" typography="" idBalloon="ROUDIER_LESTERRESCREUSEES_017_balloon_6" textType="speech">la terre aussi bien que</metadata>
+        </polygon>
+        <polygon points="1130,1626 1411,1626 1411,1672 1130,1672 1130,1626" id="ROUDIER_LESTERRESCREUSEES_017_line_24">
+            <metadata method="" typography="" idBalloon="ROUDIER_LESTERRESCREUSEES_017_balloon_6" textType="speech">je sais la creuser.</metadata>
+        </polygon>
+        <polygon points="1344,1704 1728,1704 1728,1743 1344,1743 1344,1704" id="ROUDIER_LESTERRESCREUSEES_017_line_25">
+            <metadata method="" typography="" idBalloon="ROUDIER_LESTERRESCREUSEES_017_balloon_6" textType="speech">SI votre demoiselle nous</metadata>
+        </polygon>
+        <polygon points="1295,1748 1778,1748 1778,1793 1295,1793 1295,1748" id="ROUDIER_LESTERRESCREUSEES_017_line_26">
+            <metadata method="" typography="" idBalloon="ROUDIER_LESTERRESCREUSEES_017_balloon_6" textType="speech">claque entre les doigts, on est</metadata>
+        </polygon>
+        <polygon points="1296,1792 1777,1792 1777,1840 1296,1840 1296,1792" id="ROUDIER_LESTERRESCREUSEES_017_line_27">
+            <metadata method="" typography="" idBalloon="ROUDIER_LESTERRESCREUSEES_017_balloon_6" textType="speech">bon pour rentrer à la maison.</metadata>
+        </polygon>
+        <polygon points="1299,1836 1777,1836 1777,1881 1299,1881 1299,1836" id="ROUDIER_LESTERRESCREUSEES_017_line_28">
+            <metadata method="" typography="" idBalloon="ROUDIER_LESTERRESCREUSEES_017_balloon_6" textType="speech">COmme c'est parti, au mieux,</metadata>
+        </polygon>
+        <polygon points="1393,1880 1683,1880 1683,1914 1393,1914 1393,1880" id="ROUDIER_LESTERRESCREUSEES_017_line_29">
+            <metadata method="" typography="" idBalloon="ROUDIER_LESTERRESCREUSEES_017_balloon_6" textType="speech">il va nous ralentir.</metadata>
+        </polygon>
+        <polygon points="337,2483 631,2483 631,2533 337,2533 337,2483" id="ROUDIER_LESTERRESCREUSEES_017_line_30">
+            <metadata method="" typography="" idBalloon="ROUDIER_LESTERRESCREUSEES_017_balloon_7" textType="speech">C'est ce que je dis</metadata>
+        </polygon>
+        <polygon points="337,2530 635,2530 635,2576 337,2576 337,2530" id="ROUDIER_LESTERRESCREUSEES_017_line_31">
+            <metadata method="" typography="" idBalloon="ROUDIER_LESTERRESCREUSEES_017_balloon_7" textType="speech">Lecreux, vous êtes</metadata>
+        </polygon>
+        <polygon points="341,2574 634,2574 634,2619 341,2619 341,2574" id="ROUDIER_LESTERRESCREUSEES_017_line_32">
+            <metadata method="" typography="" idBalloon="ROUDIER_LESTERRESCREUSEES_017_balloon_7" textType="speech">un homme pressé.</metadata>
+        </polygon>
+    </svg>
+    <svg contentScriptType="text/ecmascript" zoomAndPan="magnify" contentStyleType="text/css" class="linkSBSC" preserveAspectRatio="xMidYMid meet" version="1.0">
+    <polygon points="959,128 960,128 676,402 675,402 959,128" idCharacter="ROUDIER_LESTERRESCREUSEES_017_character_0" idBalloon="ROUDIER_LESTERRESCREUSEES_017_balloon_0"/>
+    <polygon points="1359,398 1360,398 1558,345 1557,345 1359,398" idCharacter="ROUDIER_LESTERRESCREUSEES_017_character_2" idBalloon="ROUDIER_LESTERRESCREUSEES_017_balloon_2"/>
+    <polygon points="937,378 938,378 676,402 675,402 937,378" idCharacter="ROUDIER_LESTERRESCREUSEES_017_character_0" idBalloon="ROUDIER_LESTERRESCREUSEES_017_balloon_1"/>
+    <polygon points="1014,751 1015,751 1276,1012 1275,1012 1014,751" idCharacter="ROUDIER_LESTERRESCREUSEES_017_character_4" idBalloon="ROUDIER_LESTERRESCREUSEES_017_balloon_4"/>
+    <polygon points="895,1111 896,1111 1276,1012 1275,1012 895,1111" idCharacter="ROUDIER_LESTERRESCREUSEES_017_character_4" idBalloon="ROUDIER_LESTERRESCREUSEES_017_balloon_5"/>
+    <polygon points="1588,559 1589,559 1558,345 1557,345 1588,559" idCharacter="ROUDIER_LESTERRESCREUSEES_017_character_2" idBalloon="ROUDIER_LESTERRESCREUSEES_017_balloon_3"/>
+    <polygon points="1408,1733 1409,1733 1458,2238 1457,2238 1408,1733" idCharacter="ROUDIER_LESTERRESCREUSEES_017_character_7" idBalloon="ROUDIER_LESTERRESCREUSEES_017_balloon_6"/>
+    <polygon points="477,2477 478,2477 563,2252 562,2252 477,2477" idCharacter="ROUDIER_LESTERRESCREUSEES_017_character_6" idBalloon="ROUDIER_LESTERRESCREUSEES_017_balloon_7"/>
+  </svg>
+<metadata method="GroundTruth" lastModificationDate="Fri Feb 14 17:43:53 CET 2014" lastStepModified="Balloon_Rank"/>
+</svg>

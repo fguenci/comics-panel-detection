@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" contentScriptType="text/ecmascript" width="311mm" zoomAndPan="magnify" contentStyleType="text/css" height="429mm" viewBox="0 0 509 924" preserveAspectRatio="xMidYMid meet" version="1.0">
+    <title>MONTAIGNE_TUMOURRASMOINSBETE_T01_125</title>
+    <svg contentScriptType="text/ecmascript" zoomAndPan="magnify" contentStyleType="text/css" class="Page" preserveAspectRatio="xMidYMid meet" version="1.0">
+        <image x="0" y="0" width="509" xlink:href="../Pages/MONTAIGNE_TUMOURRASMOINSBETE_T01_125.jpg" xlink:type="simple" xlink:actuate="onLoad" height="924" preserveAspectRatio="xMidYMid meet" xlink:show="embed"/>
+        <metadata collectionTitle="Tu mourras moins bête" editorName="Ankama" doublePage="false" website="http://tumourrasmoinsbete.blogspot.fr/2010/09/avant-de-vous-passer-des-liens-vers-des.html" albumTitle="La science, c'est pas du cinéma !" drawerName="Marion Montaigne" language="french" resolution="" ISBN="978-2359102208" readingDirection="leftToRight" writerName="Marion Montaigne" releaseDate="2011" pageNumber="125"/>
+    </svg>
+	<style type="text/css" xml:space="preserve">
+        * { stroke-width: 0; stroke-linejoin: round; }
+        .Unclassified { fill: orange; stroke: none; opacity: 1.0; visibility: hidden; }
+        .Noise { fill: pink; stroke: none; opacity: 0.2; visibility: hidden; }
+        .Panel { fill: red; stroke: none; opacity: 0.3; visibility: visible; image-rendering: optimizeSpeed; }
+        .Line { fill: green; stroke: none; opacity: 0.5; visibility: visible; image-rendering: optimizeSpeed; }
+        .TextArea { fill: grey; stroke: none; opacity: 0.2; visibility: visible; image-rendering: optimizeSpeed; }
+        .Balloon { fill: cyan; stroke: none; opacity: 0.5; visibility: visible; image-rendering: optimizeSpeed; }
+        .Letter { fill: blue; stroke: none; opacity: 0.2; visibility: hidden; }
+        .Character { fill: yellow; stroke: none; opacity: 0.3; visibility: visible; image-rendering: optimizeSpeed; }
+        .Page { fill: white; stroke: none; opacity: 0.5; visibility: visible; }
+        .linkSBSC { fill: blue; stroke: none; opacity: 0.5; visibility: visible; }
+        polygon:hover { stroke:red;stroke-width:2; } 
+    </style><svg contentScriptType="text/ecmascript" zoomAndPan="magnify" contentStyleType="text/css" class="Panel" preserveAspectRatio="xMidYMid meet" version="1.0">
+        <polygon id="MONTAIGNE_TUMOURRASMOINSBETE_T01_125_panel_0" points="96,73 426,73 426,228 96,228 96,73">
+            <metadata viewAngle="" uri="" shot="" area="" rank="1" fillingPcent=""/>
+        </polygon>
+        <polygon points="121,329 321,329 321,453 121,453 121,329" id="MONTAIGNE_TUMOURRASMOINSBETE_T01_125_panel_1">
+            <metadata viewAngle="" uri="" shot="" area="" rank="2" fillingPcent=""/>
+        </polygon>
+        <polygon points="137,515 323,515 323,678 137,678 137,515" id="MONTAIGNE_TUMOURRASMOINSBETE_T01_125_panel_2">
+            <metadata viewAngle="" uri="" shot="" area="" rank="3" fillingPcent=""/>
+        </polygon>
+        <polygon points="53,745 474,745 474,922 53,922 53,745" id="MONTAIGNE_TUMOURRASMOINSBETE_T01_125_panel_3">
+            <metadata viewAngle="" uri="" shot="" area="" rank="4" fillingPcent=""/>
+        </polygon>
+    </svg>
+    <svg contentScriptType="text/ecmascript" zoomAndPan="magnify" contentStyleType="text/css" class="TextArea" preserveAspectRatio="xMidYMid meet" version="1.0"/>
+    <svg contentScriptType="text/ecmascript" zoomAndPan="magnify" contentStyleType="text/css" class="Balloon" preserveAspectRatio="xMidYMid meet" version="1.0">
+        <polygon points="119,29 148,19 182,11 230,10 261,11 287,12 329,16 351,19 378,26 383,29 391,35 392,43 392,47 383,57 377,66 364,74 346,80 313,85 287,85 267,85 241,82 223,78 212,75 212,75 213,80 213,82 213,87 213,89 208,88 207,79 206,75 201,74 188,73 170,73 142,67 130,60 119,46 119,41 119,29" id="MONTAIGNE_TUMOURRASMOINSBETE_T01_125_balloon_0">
+            <metadata borderStyle="other" tailTip="208,88" boundingBox="" tailDirection="S" rank="1"/>
+        </polygon>
+        <polygon points="83,240 509,240 509,326 83,326 83,240" id="MONTAIGNE_TUMOURRASMOINSBETE_T01_125_balloon_1">
+            <metadata borderStyle="other" tailTip="" boundingBox="" tailDirection="none" rank="2"/>
+        </polygon>
+        <polygon points="143,492 176,500 190,526 177,544 182,558 168,549 140,540 131,516 143,492" id="MONTAIGNE_TUMOURRASMOINSBETE_T01_125_balloon_2">
+            <metadata borderStyle="smooth" tailTip="182,558" boundingBox="" tailDirection="S" rank="3"/>
+        </polygon>
+        <polygon points="331,498 351,502 361,520 356,533 333,537 316,550 320,536 313,517 331,498" id="MONTAIGNE_TUMOURRASMOINSBETE_T01_125_balloon_3">
+            <metadata borderStyle="smooth" tailTip="316,550" boundingBox="" tailDirection="SW" rank="4"/>
+        </polygon>
+        <polygon points="128,742 126,731 132,720 147,721 165,723 178,725 180,736 170,744 156,747 140,744 139,745 139,750 142,752 140,758 135,760 132,755 134,750 133,747 133,742 131,745 128,742" id="MONTAIGNE_TUMOURRASMOINSBETE_T01_125_balloon_4">
+            <metadata borderStyle="other" tailTip="135,760" boundingBox="" tailDirection="S" rank="5"/>
+        </polygon>
+        <polygon points="240,742 235,742 234,748 230,745 231,740 229,733 238,724 254,722 271,722 302,721 320,722 324,736 312,740 289,741 270,741 254,742 240,742" id="MONTAIGNE_TUMOURRASMOINSBETE_T01_125_balloon_5">
+            <metadata borderStyle="other" tailTip="234,748" boundingBox="" tailDirection="S" rank="6"/>
+        </polygon>
+        <polygon points="356,742 378,739 398,739 406,751 406,758 377,761 355,760 352,757 349,758 349,763 345,766 340,759 346,752 353,749 356,742" id="MONTAIGNE_TUMOURRASMOINSBETE_T01_125_balloon_6">
+            <metadata borderStyle="other" tailTip="345,766" boundingBox="" tailDirection="S" rank="7"/>
+        </polygon>
+    </svg>
+    <svg contentScriptType="text/ecmascript" zoomAndPan="magnify" contentStyleType="text/css" class="Character" preserveAspectRatio="xMidYMid meet" version="1.0">
+        <polygon points="187,98 282,98 282,226 187,226 187,98" id="MONTAIGNE_TUMOURRASMOINSBETE_T01_125_character_0">
+            <metadata uri="" area="" fillingPcent=""/>
+        </polygon>
+        <polygon points="243,329 318,325 326,448 249,445 278,416 243,370 201,385 232,424 188,433 168,405 170,367 243,329" id="MONTAIGNE_TUMOURRASMOINSBETE_T01_125_character_1">
+            <metadata uri="" area="" fillingPcent=""/>
+        </polygon>
+        <polygon points="213,369 262,384 283,408 255,441 225,459 142,426 161,393 181,344 205,330 235,337 214,355 194,361 201,376 213,369" id="MONTAIGNE_TUMOURRASMOINSBETE_T01_125_character_2">
+            <metadata uri="" area="" fillingPcent=""/>
+        </polygon>
+        <polygon points="185,583 240,586 256,617 272,635 242,681 191,675 130,660 185,583" id="MONTAIGNE_TUMOURRASMOINSBETE_T01_125_character_3">
+            <metadata uri="" area="" fillingPcent=""/>
+        </polygon>
+        <polygon points="247,521 317,534 324,595 325,642 265,672 237,662 279,616 248,603 223,568 176,589 165,583 231,549 247,521" id="MONTAIGNE_TUMOURRASMOINSBETE_T01_125_character_4">
+            <metadata uri="" area="" fillingPcent=""/>
+        </polygon>
+        <polygon points="81,731 173,731 173,918 81,918 81,731" id="MONTAIGNE_TUMOURRASMOINSBETE_T01_125_character_5">
+            <metadata uri="" area="" fillingPcent=""/>
+        </polygon>
+        <polygon points="197,745 290,745 290,902 197,902 197,745" id="MONTAIGNE_TUMOURRASMOINSBETE_T01_125_character_6">
+            <metadata uri="" area="" fillingPcent=""/>
+        </polygon>
+        <polygon points="326,770 370,770 370,859 326,859 326,770" id="MONTAIGNE_TUMOURRASMOINSBETE_T01_125_character_7">
+            <metadata uri="" area="" fillingPcent=""/>
+        </polygon>
+    </svg>
+    <svg contentScriptType="text/ecmascript" zoomAndPan="magnify" contentStyleType="text/css" class="Line" preserveAspectRatio="xMidYMid meet" version="1.0">
+        <polygon points="127,18 280,18 280,45 127,45 127,18" id="MONTAIGNE_TUMOURRASMOINSBETE_T01_125_line_0">
+            <metadata typography="" uri="" method="" area="" fillingPcent="" rank="" idBalloon="MONTAIGNE_TUMOURRASMOINSBETE_T01_125_balloon_0" textType="speech">BREF GREFFER UN</metadata>
+        </polygon>
+        <polygon points="138,37 383,37 383,64 138,64 138,37" id="MONTAIGNE_TUMOURRASMOINSBETE_T01_125_line_1">
+            <metadata typography="" uri="" method="" area="" fillingPcent="" rank="" idBalloon="MONTAIGNE_TUMOURRASMOINSBETE_T01_125_balloon_0" textType="speech">VISAGE, AUJOURD'HUI, C'EST</metadata>
+        </polygon>
+        <polygon points="253,60 344,60 344,80 253,80 253,60" id="MONTAIGNE_TUMOURRASMOINSBETE_T01_125_line_2">
+            <metadata typography="" uri="" method="" area="" fillingPcent="" rank="" idBalloon="MONTAIGNE_TUMOURRASMOINSBETE_T01_125_balloon_0" textType="speech">POSSIBLE.</metadata>
+        </polygon>
+        <polygon points="104,248 501,248 501,276 104,276 104,248" id="MONTAIGNE_TUMOURRASMOINSBETE_T01_125_line_3">
+            <metadata typography="" uri="" method="" area="" fillingPcent="" rank="" idBalloon="MONTAIGNE_TUMOURRASMOINSBETE_T01_125_balloon_1" textType="narrative">MAIS JOHN ET CASTOR DEVRAIENT LOGIQUEMENT</metadata>
+        </polygon>
+        <polygon points="100,266 496,266 496,295 100,295 100,266" id="MONTAIGNE_TUMOURRASMOINSBETE_T01_125_line_4">
+            <metadata typography="" uri="" method="" area="" fillingPcent="" rank="" idBalloon="MONTAIGNE_TUMOURRASMOINSBETE_T01_125_balloon_1" textType="narrative">PRENDRE A VIE CES IMMUNODEPRESSEURS</metadata>
+        </polygon>
+        <polygon points="98,292 276,292 276,312 98,312 98,292" id="MONTAIGNE_TUMOURRASMOINSBETE_T01_125_line_5">
+            <metadata typography="" uri="" method="" area="" fillingPcent="" rank="" idBalloon="MONTAIGNE_TUMOURRASMOINSBETE_T01_125_balloon_1" textType="narrative">ET A HEURE REGULIERE.</metadata>
+        </polygon>
+        <polygon points="146,327 179,327 179,348 146,348 146,327" id="MONTAIGNE_TUMOURRASMOINSBETE_T01_125_line_6">
+            <metadata typography="" uri="" method="" area="" fillingPcent="" rank="" textType="speech">AH!</metadata>
+        </polygon>
+        <polygon points="333,319 386,319 386,343 333,343 333,319" id="MONTAIGNE_TUMOURRASMOINSBETE_T01_125_line_7">
+            <metadata typography="" uri="" method="" area="" fillingPcent="" rank="" idBalloon="MONTAIGNE_TUMOURRASMOINSBETE_T01_125_balloon_1" textType="speech">AAH!</metadata>
+        </polygon>
+        <polygon points="149,507 167,507 167,535 149,535 149,507" id="MONTAIGNE_TUMOURRASMOINSBETE_T01_125_line_8">
+            <metadata typography="" uri="" method="" area="" fillingPcent="" rank="" idBalloon="MONTAIGNE_TUMOURRASMOINSBETE_T01_125_balloon_2" textType="speech">?</metadata>
+        </polygon>
+        <polygon points="329,510 342,510 342,533 329,533 329,510" id="MONTAIGNE_TUMOURRASMOINSBETE_T01_125_line_9">
+            <metadata typography="" uri="" method="" area="" fillingPcent="" rank="" idBalloon="MONTAIGNE_TUMOURRASMOINSBETE_T01_125_balloon_3" textType="speech">?</metadata>
+        </polygon>
+        <polygon points="114,569 146,569 146,590 114,590 114,569" id="MONTAIGNE_TUMOURRASMOINSBETE_T01_125_line_10">
+            <metadata typography="" uri="" method="" area="" fillingPcent="" rank="" textType="onomatopoeia">BIP!</metadata>
+        </polygon>
+        <polygon points="96,589 133,589 133,607 96,607 96,589" id="MONTAIGNE_TUMOURRASMOINSBETE_T01_125_line_11">
+            <metadata typography="" uri="" method="" area="" fillingPcent="" rank="" textType="onomatopoeia">BIP!</metadata>
+        </polygon>
+        <polygon points="103,602 134,602 134,623 103,623 103,602" id="MONTAIGNE_TUMOURRASMOINSBETE_T01_125_line_12">
+            <metadata typography="" uri="" method="" area="" fillingPcent="" rank="" textType="onomatopoeia">BIP!</metadata>
+        </polygon>
+        <polygon points="297,614 360,614 360,634 297,634 297,614" id="MONTAIGNE_TUMOURRASMOINSBETE_T01_125_line_13">
+            <metadata typography="" uri="" method="" area="" fillingPcent="" rank="" textType="onomatopoeia">TILILIT</metadata>
+        </polygon>
+        <polygon points="296,632 360,632 360,654 296,654 296,632" id="MONTAIGNE_TUMOURRASMOINSBETE_T01_125_line_14">
+            <metadata typography="" uri="" method="" area="" fillingPcent="" rank="" textType="onomatopoeia">TILILIT</metadata>
+        </polygon>
+        <polygon points="133,724 174,724 174,740 133,740 133,724" id="MONTAIGNE_TUMOURRASMOINSBETE_T01_125_line_15">
+            <metadata typography="" uri="" method="" area="" fillingPcent="" rank="" idBalloon="MONTAIGNE_TUMOURRASMOINSBETE_T01_125_balloon_4" textType="speech">ATTA</metadata>
+        </polygon>
+        <polygon points="243,722 320,722 320,739 243,739 243,722" id="MONTAIGNE_TUMOURRASMOINSBETE_T01_125_line_16">
+            <metadata typography="" uri="" method="" area="" fillingPcent="" rank="" idBalloon="MONTAIGNE_TUMOURRASMOINSBETE_T01_125_balloon_5" textType="speech">2 secondes</metadata>
+        </polygon>
+        <polygon points="353,744 403,744 403,760 353,760 353,744" id="MONTAIGNE_TUMOURRASMOINSBETE_T01_125_line_17">
+            <metadata typography="" uri="" method="" area="" fillingPcent="" rank="" idBalloon="MONTAIGNE_TUMOURRASMOINSBETE_T01_125_balloon_6" textType="speech">Coupez..</metadata>
+        </polygon>
+        <polygon points="457,767 470,767 470,775 457,775 457,767" id="MONTAIGNE_TUMOURRASMOINSBETE_T01_125_line_18">
+            <metadata typography="" uri="" method="" area="" fillingPcent="" rank="" textType="speech">ZZ</metadata>
+        </polygon>
+    </svg>
+    <svg contentScriptType="text/ecmascript" zoomAndPan="magnify" contentStyleType="text/css" class="linkSBSC" preserveAspectRatio="xMidYMid meet" version="1.0">
+    <polygon points="255,49 256,49 235,162 234,162 255,49" idCharacter="MONTAIGNE_TUMOURRASMOINSBETE_T01_125_character_0" idBalloon="MONTAIGNE_TUMOURRASMOINSBETE_T01_125_balloon_0"/>
+    <polygon points="337,524 338,524 246,596 245,596 337,524" idCharacter="MONTAIGNE_TUMOURRASMOINSBETE_T01_125_character_4" idBalloon="MONTAIGNE_TUMOURRASMOINSBETE_T01_125_balloon_3"/>
+    <polygon points="160,525 161,525 202,632 201,632 160,525" idCharacter="MONTAIGNE_TUMOURRASMOINSBETE_T01_125_character_3" idBalloon="MONTAIGNE_TUMOURRASMOINSBETE_T01_125_balloon_2"/>
+    <polygon points="153,740 154,740 128,824 127,824 153,740" idCharacter="MONTAIGNE_TUMOURRASMOINSBETE_T01_125_character_5" idBalloon="MONTAIGNE_TUMOURRASMOINSBETE_T01_125_balloon_4"/>
+    <polygon points="276,734 277,734 244,823 243,823 276,734" idCharacter="MONTAIGNE_TUMOURRASMOINSBETE_T01_125_character_6" idBalloon="MONTAIGNE_TUMOURRASMOINSBETE_T01_125_balloon_5"/>
+    <polygon points="373,752 374,752 349,814 348,814 373,752" idCharacter="MONTAIGNE_TUMOURRASMOINSBETE_T01_125_character_7" idBalloon="MONTAIGNE_TUMOURRASMOINSBETE_T01_125_balloon_6"/>
+  </svg>
+<metadata method="GroundTruth" lastModificationDate="Sun Jan 26 12:25:33 CET 2014" lastStepModified="Balloon_Polygons"/>
+</svg>

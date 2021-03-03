@@ -15,7 +15,7 @@ import os
 import fnmatch
 from skimage import draw
 from pprint import pprint
-
+from xml.dom import minidom
 
 # class that defines and loads the kangaroo dataset
 class ComicsDataset(Dataset):
@@ -27,10 +27,14 @@ class ComicsDataset(Dataset):
 			tree = ElementTree.parse(ann_path)
 			# get the root of the document
 			root = tree.getroot()
-			if 'svg' not in root.tag:
-				width, height, polygons = loadFromXml(root)
-			else:
-				width, height, polygons = loadFromSvg()
+			try:
+				if 'svg' not in root.tag:
+					width, height, polygons = loadFromXml(root)
+				else:
+					width, height, polygons = loadFromSvg()
+			except ValueError as error:
+				print('File in errore: ' + ann_path)
+				raise error
 
 			return width, height, polygons
 
@@ -44,8 +48,11 @@ class ComicsDataset(Dataset):
 				xmax = int(box.find('xmax').text)
 				ymax = int(box.find('ymax').text)
 				allX = [xmin, xmin, xmax, xmax]
-				allY = [ymin, ymax, ymin, ymax]
+				allY = [ymin, ymax, ymax, ymin]
 				polygons.append({'all_points_x': allX, 'all_points_y': allY, 'label':label})
+				if label == '7':
+					print(minidom.parseString(ElementTree.tostring(root)).toprettyxml(indent="   "))
+					raise ValueError("load_dataset - found label: '%s'" % label)
 			# extract image dimensions
 			width = int(root.find('.//size/width').text)
 			height = int(root.find('.//size/height').text)
@@ -97,8 +104,6 @@ class ComicsDataset(Dataset):
 				if not os.path.exists(image_id):
 					raise FileNotFoundError("load_dataset - No such file: '%s'" % image_id)
 				ann_path = os.path.relpath(os.path.join(path,f))
-				print('load_dataset - image file     : ' + image_id)
-				print('load_dataset - annotation file: ' + ann_path)
 				count += 1
 				# skip all images after 150 if we are building the train set
 				if is_train and count >= (num_files * 0.8):
@@ -127,11 +132,17 @@ class ComicsDataset(Dataset):
 		class_ids = list()
 		for i, p in enumerate(info["polygons"]):
 			# Get indexes of pixels inside the polygon and set them to 1
-			rr, cc = draw.polygon(p['all_points_y'], p['all_points_x'])
+			rr, cc = draw.polygon(p['all_points_y'], p['all_points_x'], mask.shape)
 			try:
 				class_ids.append(self.class_names.index(p['label']))
 				mask[rr, cc, i] = 1
 			except ValueError as error:
+				pprint(p)
+				pprint(class_ids)
+				pprint(self.class_names)
+				print('File: ' + info["annotation"])
+				raise error
+			except IndexError as error:
 				pprint(p)
 				pprint(class_ids)
 				pprint(self.class_names)
@@ -180,6 +191,7 @@ class ComicsDataset(Dataset):
 			sample = expand_dims(scaled_image, 0)
 			# make prediction
 			yhat = model.detect(sample, verbose=0)[0]
+			pprint(yhat)
 			# define subplot
 			pyplot.subplot(n_images, 2, i*2+1)
 			# plot raw pixel data
