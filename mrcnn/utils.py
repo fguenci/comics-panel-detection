@@ -22,7 +22,6 @@ import urllib.request
 import shutil
 import warnings
 from distutils.version import LooseVersion
-from numba import njit
 
 # URL from which to download the latest COCO trained weights
 COCO_MODEL_URL = "https://github.com/matterport/Mask_RCNN/releases/download/v2.0/mask_rcnn_coco.h5"
@@ -32,7 +31,6 @@ COCO_MODEL_URL = "https://github.com/matterport/Mask_RCNN/releases/download/v2.0
 #  Bounding Boxes
 ############################################################
 
-@njit
 def extract_bboxes(mask):
     """Compute bounding boxes from masks.
     mask: [height, width, num_instances]. Mask pixels are either 1 or 0.
@@ -59,7 +57,6 @@ def extract_bboxes(mask):
     return boxes.astype(np.int32)
 
 
-@njit
 def compute_iou(box, boxes, box_area, boxes_area):
     """Calculates IoU of the given box with the array of the given boxes.
     box: 1D vector [y1, x1, y2, x2]
@@ -81,7 +78,6 @@ def compute_iou(box, boxes, box_area, boxes_area):
     return iou
 
 
-@njit
 def compute_overlaps(boxes1, boxes2):
     """Computes IoU overlaps between two sets of boxes.
     boxes1, boxes2: [N, (y1, x1, y2, x2)].
@@ -101,7 +97,6 @@ def compute_overlaps(boxes1, boxes2):
     return overlaps
 
 
-@njit
 def compute_overlaps_masks(masks1, masks2):
     """Computes IoU overlaps between two sets of masks.
     masks1, masks2: [Height, Width, instances]
@@ -124,7 +119,6 @@ def compute_overlaps_masks(masks1, masks2):
     return overlaps
 
 
-@njit
 def non_max_suppression(boxes, scores, threshold):
     """Performs non-maximum suppression and returns indices of kept boxes.
     boxes: [N, (y1, x1, y2, x2)]. Notice that (y2, x2) lays outside the box.
@@ -162,7 +156,6 @@ def non_max_suppression(boxes, scores, threshold):
     return np.array(pick, dtype=np.int32)
 
 
-@njit
 def apply_box_deltas(boxes, deltas):
     """Applies the given deltas to the given boxes.
     boxes: [N, (y1, x1, y2, x2)]. Note that (y2, x2) is outside the box.
@@ -187,7 +180,6 @@ def apply_box_deltas(boxes, deltas):
     return np.stack([y1, x1, y2, x2], axis=1)
 
 
-@njit
 def box_refinement_graph(box, gt_box):
     """Compute refinement needed to transform box to gt_box.
     box and gt_box are [N, (y1, x1, y2, x2)]
@@ -214,7 +206,6 @@ def box_refinement_graph(box, gt_box):
     return result
 
 
-@njit
 def box_refinement(box, gt_box):
     """Compute refinement needed to transform box to gt_box.
     box and gt_box are [N, (y1, x1, y2, x2)]. (y2, x2) is
@@ -261,7 +252,6 @@ class Dataset(object):
     See COCODataset and ShapesDataset as examples.
     """
 
-    @njit
     def __init__(self, class_map=None):
         self._image_ids = []
         self.image_info = []
@@ -269,7 +259,6 @@ class Dataset(object):
         self.class_info = [{"source": "", "id": 0, "name": "BG"}]
         self.source_class_ids = {}
 
-    @njit
     def add_class(self, source, class_id, class_name):
         assert "." not in source, "Source name cannot contain a dot"
         # Does the class exist already?
@@ -284,7 +273,6 @@ class Dataset(object):
             "name": class_name,
         })
 
-    @njit
     def add_image(self, source, image_id, path, **kwargs):
         image_info = {
             "id": image_id,
@@ -294,7 +282,6 @@ class Dataset(object):
         image_info.update(kwargs)
         self.image_info.append(image_info)
 
-    @njit
     def image_reference(self, image_id):
         """Return a link to the image in its source Website or details about
         the image that help looking it up or debugging it.
@@ -304,7 +291,6 @@ class Dataset(object):
         """
         return ""
 
-    @njit
     def prepare(self, class_map=None):
         """Prepares the Dataset class for use.
 
@@ -341,7 +327,6 @@ class Dataset(object):
                 if i == 0 or source == info['source']:
                     self.source_class_ids[source].append(i)
 
-    @njit
     def map_source_class_id(self, source_class_id):
         """Takes a source class ID and returns the int class ID assigned to it.
 
@@ -350,7 +335,6 @@ class Dataset(object):
         """
         return self.class_from_source_map[source_class_id]
 
-    @njit
     def get_source_class_id(self, class_id, source):
         """Map an internal class ID to the corresponding class ID in the source dataset."""
         info = self.class_info[class_id]
@@ -361,7 +345,6 @@ class Dataset(object):
     def image_ids(self):
         return self._image_ids
 
-    @njit
     def source_image_link(self, image_id):
         """Returns the path or URL to the image.
         Override this to return a URL to the image if it's available online for easy
@@ -369,7 +352,6 @@ class Dataset(object):
         """
         return self.image_info[image_id]["path"]
 
-    @njit
     def load_image(self, image_id):
         """Load the specified image and return a [H,W,3] Numpy array.
         """
@@ -383,7 +365,6 @@ class Dataset(object):
             image = image[..., :3]
         return image
 
-    @njit
     def load_mask(self, image_id):
         """Load instance masks for the given image.
 
@@ -404,7 +385,6 @@ class Dataset(object):
         return mask, class_ids
 
 
-@njit
 def resize_image(image, min_dim=None, max_dim=None, min_scale=None, mode="square"):
     """Resizes an image keeping the aspect ratio unchanged.
 
@@ -512,7 +492,6 @@ def resize_image(image, min_dim=None, max_dim=None, min_scale=None, mode="square
     return image.astype(image_dtype), window, scale, padding, crop
 
 
-@njit
 def resize_mask(mask, scale, padding, crop=None):
     """Resizes a mask using the given scale and padding.
     Typically, you get the scale and padding from resize_image() to
@@ -535,7 +514,6 @@ def resize_mask(mask, scale, padding, crop=None):
     return mask
 
 
-@njit
 def minimize_mask(bbox, mask, mini_shape):
     """Resize masks to a smaller version to reduce memory load.
     Mini-masks can be resized back to image scale using expand_masks()
@@ -556,7 +534,6 @@ def minimize_mask(bbox, mask, mini_shape):
     return mini_mask
 
 
-@njit
 def expand_mask(bbox, mini_mask, image_shape):
     """Resizes mini masks back to image size. Reverses the change
     of minimize_mask().
@@ -580,7 +557,6 @@ def mold_mask(mask, config):
     pass
 
 
-@njit
 def unmold_mask(mask, bbox, image_shape):
     """Converts a mask generated by the neural network to a format similar
     to its original shape.
@@ -604,7 +580,6 @@ def unmold_mask(mask, bbox, image_shape):
 #  Anchors
 ############################################################
 
-@njit
 def generate_anchors(scales, ratios, shape, feature_stride, anchor_stride):
     """
     scales: 1D array of anchor sizes in pixels. Example: [32, 64, 128]
@@ -644,7 +619,6 @@ def generate_anchors(scales, ratios, shape, feature_stride, anchor_stride):
     return boxes
 
 
-@njit
 def generate_pyramid_anchors(scales, ratios, feature_shapes, feature_strides,
                              anchor_stride):
     """Generate anchors at different levels of a feature pyramid. Each scale
@@ -669,7 +643,6 @@ def generate_pyramid_anchors(scales, ratios, feature_shapes, feature_strides,
 #  Miscellaneous
 ############################################################
 
-@njit
 def trim_zeros(x):
     """It's common to have tensors larger than the available data and
     pad with zeros. This function removes rows that are all zeros.
@@ -680,7 +653,6 @@ def trim_zeros(x):
     return x[~np.all(x == 0, axis=1)]
 
 
-@njit
 def compute_matches(gt_boxes, gt_class_ids, gt_masks,
                     pred_boxes, pred_class_ids, pred_scores, pred_masks,
                     iou_threshold=0.5, score_threshold=0.0):
@@ -740,7 +712,6 @@ def compute_matches(gt_boxes, gt_class_ids, gt_masks,
     return gt_match, pred_match, overlaps
 
 
-@njit
 def compute_ap(gt_boxes, gt_class_ids, gt_masks,
                pred_boxes, pred_class_ids, pred_scores, pred_masks,
                iou_threshold=0.5):
@@ -780,7 +751,6 @@ def compute_ap(gt_boxes, gt_class_ids, gt_masks,
     return mAP, precisions, recalls, overlaps
 
 
-@njit
 def compute_ap_range(gt_box, gt_class_id, gt_mask,
                      pred_box, pred_class_id, pred_score, pred_mask,
                      iou_thresholds=None, verbose=1):
@@ -805,7 +775,6 @@ def compute_ap_range(gt_box, gt_class_id, gt_mask,
     return AP
 
 
-@njit
 def compute_recall(pred_boxes, gt_boxes, iou):
     """Compute the recall at the given IoU threshold. It's an indication
     of how many GT boxes were found by the given prediction boxes.
@@ -831,7 +800,6 @@ def compute_recall(pred_boxes, gt_boxes, iou):
 # an easy way to support batches > 1 quickly with little code modification.
 # In the long run, it's more efficient to modify the code to support large
 # batches and getting rid of this function. Consider this a temporary solution
-@njit
 def batch_slice(inputs, graph_fn, batch_size, names=None):
     """Splits inputs into slices and feeds each slice to a copy of the given
     computation graph and then combines the results. It allows you to run a
@@ -869,7 +837,6 @@ def batch_slice(inputs, graph_fn, batch_size, names=None):
     return result
 
 
-@njit
 def download_trained_weights(coco_model_path, verbose=1):
     """Download COCO trained weights from Releases.
 
@@ -883,7 +850,6 @@ def download_trained_weights(coco_model_path, verbose=1):
         print("... done downloading pretrained model!")
 
 
-@njit
 def norm_boxes(boxes, shape):
     """Converts boxes from pixel coordinates to normalized coordinates.
     boxes: [N, (y1, x1, y2, x2)] in pixel coordinates
@@ -901,7 +867,6 @@ def norm_boxes(boxes, shape):
     return np.divide((boxes - shift), scale).astype(np.float32)
 
 
-@njit
 def denorm_boxes(boxes, shape):
     """Converts boxes from normalized coordinates to pixel coordinates.
     boxes: [N, (y1, x1, y2, x2)] in normalized coordinates
@@ -919,7 +884,6 @@ def denorm_boxes(boxes, shape):
     return np.around(np.multiply(boxes, scale) + shift).astype(np.int32)
 
 
-@njit
 def resize(image, output_shape, order=1, mode='constant', cval=0, clip=True,
            preserve_range=False, anti_aliasing=False, anti_aliasing_sigma=None):
     """A wrapper for Scikit-Image resize().

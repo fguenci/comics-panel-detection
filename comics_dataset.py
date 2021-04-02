@@ -16,15 +16,12 @@ import fnmatch
 from skimage import draw
 from pprint import pprint
 from xml.dom import minidom
-from numba import njit
 
 # class that defines and loads the kangaroo dataset
 class ComicsDataset(Dataset):
 	# load the dataset definitions
-	@njit
 	def load_dataset(self, dataset_dir, is_train=True):
 		
-		@njit
 		def extract_polygon():
 			# load and parse the file
 			tree = ElementTree.parse(ann_path)
@@ -41,7 +38,6 @@ class ComicsDataset(Dataset):
 
 			return width, height, polygons
 
-		@njit
 		def loadFromXml(root):
 			polygons = []
 			for obj in root.findall('.//object'):
@@ -62,7 +58,6 @@ class ComicsDataset(Dataset):
 			height = int(root.find('.//size/height').text)
 			return width, height, polygons
 
-		@njit
 		def loadFromSvg():
 			from xml.dom.minidom import parse
 
@@ -127,7 +122,6 @@ class ComicsDataset(Dataset):
 							   polygons=polygons)
     	
 	# load the masks for an image
-	@njit
 	def load_mask(self, image_id):
 		# get details of image
 		info = self.image_info[image_id]
@@ -158,12 +152,10 @@ class ComicsDataset(Dataset):
 		return mask, asarray(class_ids, dtype='int32')
 
 	# load an image reference
-	@njit
 	def image_reference(self, image_id):
 		info = self.image_info[image_id]
 		return info['path']
 
-	@njit
 	def evaluate_model(self, dataset, model, cfg):
 		APs = list()
 		for image_id in dataset.image_ids:
@@ -186,7 +178,6 @@ class ComicsDataset(Dataset):
 		return mAP
 	
 	# plot a number of photos with ground truth and predictions
-	@njit
 	def plot_actual_vs_predicted(self, dataset, model, cfg, n_images=5):
 		# load image and mask
 		for i in range(n_images):
