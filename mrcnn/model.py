@@ -24,6 +24,7 @@ from tensorflow.python.eager import context
 import tensorflow.keras.models as KM
 
 from comics_panel_detection.mrcnn import utils
+from numba import njit
 
 # Requires TensorFlow 2.0+
 from distutils.version import LooseVersion
@@ -36,6 +37,7 @@ tf.compat.v1.disable_eager_execution()
 ############################################################
 
 
+@njit
 def log(text, array=None):
     """Prints a text message. And, optionally, if a Numpy array is provided it
     prints it's shape, min, and max values.
@@ -59,6 +61,7 @@ class BatchNorm(KL.BatchNormalization):
     so this layer is often frozen (via setting in Config class) and functions
     as linear layer.
     """
+@njit
     def call(self, inputs, training=None):
         """
         Note about training values:
@@ -69,6 +72,7 @@ class BatchNorm(KL.BatchNormalization):
         return super(self.__class__, self).call(inputs, training=training)
 
 
+@njit
 def compute_backbone_shapes(config, image_shape):
     """Computes the width and height of each stage of the backbone network.
 
@@ -93,6 +97,7 @@ def compute_backbone_shapes(config, image_shape):
 # Code adopted from:
 # https://github.com/fchollet/deep-learning-models/blob/master/resnet50.py
 
+@njit
 def identity_block(input_tensor, kernel_size, filters, stage, block,
                    use_bias=True, train_bn=True):
     """The identity_block is the block that has no conv layer at shortcut
@@ -128,6 +133,7 @@ def identity_block(input_tensor, kernel_size, filters, stage, block,
     return x
 
 
+@njit
 def conv_block(input_tensor, kernel_size, filters, stage, block,
                strides=(2, 2), use_bias=True, train_bn=True):
     """conv_block is the block that has a conv layer at shortcut
@@ -169,6 +175,7 @@ def conv_block(input_tensor, kernel_size, filters, stage, block,
     return x
 
 
+@njit
 def resnet_graph(input_image, architecture, stage5=False, train_bn=True):
     """Build a ResNet graph.
         architecture: Can be resnet50 or resnet101
@@ -211,6 +218,7 @@ def resnet_graph(input_image, architecture, stage5=False, train_bn=True):
 #  Proposal Layer
 ############################################################
 
+@njit
 def apply_box_deltas_graph(boxes, deltas):
     """Applies the given deltas to the given boxes.
     boxes: [N, (y1, x1, y2, x2)] boxes to update
@@ -235,6 +243,7 @@ def apply_box_deltas_graph(boxes, deltas):
     return result
 
 
+@njit
 def clip_boxes_graph(boxes, window):
     """
     boxes: [N, (y1, x1, y2, x2)]
@@ -268,12 +277,14 @@ class ProposalLayer(KE.Layer):
         Proposals in normalized coordinates [batch, rois, (y1, x1, y2, x2)]
     """
 
+@njit
     def __init__(self, proposal_count, nms_threshold, config=None, **kwargs):
         super(ProposalLayer, self).__init__(**kwargs)
         self.config = config
         self.proposal_count = proposal_count
         self.nms_threshold = nms_threshold
 
+@njit
     def get_config(self):
         config = super(ProposalLayer, self).get_config()
         config["config"] = self.config.to_dict()
@@ -281,6 +292,7 @@ class ProposalLayer(KE.Layer):
         config["nms_threshold"] = self.nms_threshold
         return config
 
+@njit
     def call(self, inputs):
         # Box Scores. Use the foreground class confidence. [Batch, num_rois, 1]
         scores = inputs[0][:, :, 1]
@@ -323,6 +335,7 @@ class ProposalLayer(KE.Layer):
         # for small objects, so we're skipping it.
 
         # Non-max suppression
+        @njit
         def nms(boxes, scores):
             indices = tf.image.non_max_suppression(
                 boxes, scores, self.proposal_count,
@@ -341,6 +354,7 @@ class ProposalLayer(KE.Layer):
             proposals.set_shape(out_shape)
         return proposals
 
+@njit
     def compute_output_shape(self, input_shape):
         return None, self.proposal_count, 4
 
@@ -349,6 +363,7 @@ class ProposalLayer(KE.Layer):
 #  ROIAlign Layer
 ############################################################
 
+@njit
 def log2_graph(x):
     """Implementation of Log2. TF doesn't have a native implementation."""
     return tf.math.log(x) / tf.math.log(2.0)
@@ -374,15 +389,18 @@ class PyramidROIAlign(KE.Layer):
     constructor.
     """
 
+@njit
     def __init__(self, pool_shape, **kwargs):
         super(PyramidROIAlign, self).__init__(**kwargs)
         self.pool_shape = tuple(pool_shape)
 
+@njit
     def get_config(self):
         config = super(PyramidROIAlign, self).get_config()
         config['pool_shape'] = self.pool_shape
         return config
 
+@njit
     def call(self, inputs):
         # Crop boxes [batch, num_boxes, (y1, x1, y2, x2)] in normalized coords
         boxes = inputs[0]
@@ -464,6 +482,7 @@ class PyramidROIAlign(KE.Layer):
         pooled = tf.reshape(pooled, shape)
         return pooled
 
+@njit
     def compute_output_shape(self, input_shape):
         return input_shape[0][:2] + self.pool_shape + (input_shape[2][-1], )
 
@@ -472,6 +491,7 @@ class PyramidROIAlign(KE.Layer):
 #  Detection Target Layer
 ############################################################
 
+@njit
 def overlaps_graph(boxes1, boxes2):
     """Computes IoU overlaps between two sets of boxes.
     boxes1, boxes2: [N, (y1, x1, y2, x2)].
@@ -501,6 +521,7 @@ def overlaps_graph(boxes1, boxes2):
     return overlaps
 
 
+@njit
 def detection_targets_graph(proposals, gt_class_ids, gt_boxes, gt_masks, config):
     """Generates detection targets for one image. Subsamples proposals and
     generates target class IDs, bounding box deltas, and masks for each.
@@ -662,15 +683,18 @@ class DetectionTargetLayer(KE.Layer):
     Note: Returned arrays might be zero padded if not enough target ROIs.
     """
 
+@njit
     def __init__(self, config, **kwargs):
         super(DetectionTargetLayer, self).__init__(**kwargs)
         self.config = config
 
+@njit
     def get_config(self):
         config = super(DetectionTargetLayer, self).get_config()
         config["config"] = self.config.to_dict()
         return config
 
+@njit
     def call(self, inputs):
         proposals = inputs[0]
         gt_class_ids = inputs[1]
@@ -687,6 +711,7 @@ class DetectionTargetLayer(KE.Layer):
             self.config.IMAGES_PER_GPU, names=names)
         return outputs
 
+@njit
     def compute_output_shape(self, input_shape):
         return [
             (None, self.config.TRAIN_ROIS_PER_IMAGE, 4),  # rois
@@ -696,6 +721,7 @@ class DetectionTargetLayer(KE.Layer):
              self.config.MASK_SHAPE[1])  # masks
         ]
 
+@njit
     def compute_mask(self, inputs, mask=None):
         return [None, None, None, None]
 
@@ -704,6 +730,7 @@ class DetectionTargetLayer(KE.Layer):
 #  Detection Layer
 ############################################################
 
+@njit
 def refine_detections_graph(rois, probs, deltas, window, config):
     """Refine classified proposals and filter overlaps and return final
     detections.
@@ -751,6 +778,7 @@ def refine_detections_graph(rois, probs, deltas, window, config):
     pre_nms_rois = tf.gather(refined_rois,   keep)
     unique_pre_nms_class_ids = tf.unique(pre_nms_class_ids)[0]
 
+@njit
     def nms_keep_map(class_id):
         """Apply Non-Maximum Suppression on ROIs of the given class."""
         # Indices of ROIs of the given class
@@ -811,15 +839,18 @@ class DetectionLayer(KE.Layer):
     coordinates are normalized.
     """
 
+@njit
     def __init__(self, config=None, **kwargs):
         super(DetectionLayer, self).__init__(**kwargs)
         self.config = config
 
+@njit
     def get_config(self):
         config = super(DetectionLayer, self).get_config()
         config["config"] = self.config.to_dict()
         return config
 
+@njit
     def call(self, inputs):
         rois = inputs[0]
         mrcnn_class = inputs[1]
@@ -847,6 +878,7 @@ class DetectionLayer(KE.Layer):
             detections_batch,
             [self.config.BATCH_SIZE, self.config.DETECTION_MAX_INSTANCES, 6])
 
+@njit
     def compute_output_shape(self, input_shape):
         return (None, self.config.DETECTION_MAX_INSTANCES, 6)
 
@@ -855,6 +887,7 @@ class DetectionLayer(KE.Layer):
 #  Region Proposal Network (RPN)
 ############################################################
 
+@njit
 def rpn_graph(feature_map, anchors_per_location, anchor_stride):
     """Builds the computation graph of Region Proposal Network.
 
@@ -899,6 +932,7 @@ def rpn_graph(feature_map, anchors_per_location, anchor_stride):
     return [rpn_class_logits, rpn_probs, rpn_bbox]
 
 
+@njit
 def build_rpn_model(anchor_stride, anchors_per_location, depth):
     """Builds a Keras model of the Region Proposal Network.
     It wraps the RPN graph so it can be used multiple times with shared
@@ -925,6 +959,7 @@ def build_rpn_model(anchor_stride, anchors_per_location, depth):
 #  Feature Pyramid Network Heads
 ############################################################
 
+@njit
 def fpn_classifier_graph(rois, feature_maps, image_meta,
                          pool_size, num_classes, train_bn=True,
                          fc_layers_size=1024):
@@ -984,6 +1019,7 @@ def fpn_classifier_graph(rois, feature_maps, image_meta,
     return mrcnn_class_logits, mrcnn_probs, mrcnn_bbox
 
 
+@njit
 def build_fpn_mask_graph(rois, feature_maps, image_meta,
                          pool_size, num_classes, train_bn=True):
     """Builds the computation graph of the mask head of Feature Pyramid Network.
@@ -1040,6 +1076,7 @@ def build_fpn_mask_graph(rois, feature_maps, image_meta,
 #  Loss Functions
 ############################################################
 
+@njit
 def smooth_l1_loss(y_true, y_pred):
     """Implements Smooth-L1 loss.
     y_true and y_pred are typically: [N, 4], but could be any shape.
@@ -1050,6 +1087,7 @@ def smooth_l1_loss(y_true, y_pred):
     return loss
 
 
+@njit
 def rpn_class_loss_graph(rpn_match, rpn_class_logits):
     """RPN anchor classifier loss.
 
@@ -1075,6 +1113,7 @@ def rpn_class_loss_graph(rpn_match, rpn_class_logits):
     return loss
 
 
+@njit
 def rpn_bbox_loss_graph(config, target_bbox, rpn_match, rpn_bbox):
     """Return the RPN bounding box loss graph.
 
@@ -1104,6 +1143,7 @@ def rpn_bbox_loss_graph(config, target_bbox, rpn_match, rpn_bbox):
     return loss
 
 
+@njit
 def mrcnn_class_loss_graph(target_class_ids, pred_class_logits,
                            active_class_ids):
     """Loss for the classifier head of Mask RCNN.
@@ -1140,6 +1180,7 @@ def mrcnn_class_loss_graph(target_class_ids, pred_class_logits,
     return loss
 
 
+@njit
 def mrcnn_bbox_loss_graph(target_bbox, target_class_ids, pred_bbox):
     """Loss for Mask R-CNN bounding box refinement.
 
@@ -1171,6 +1212,7 @@ def mrcnn_bbox_loss_graph(target_bbox, target_class_ids, pred_bbox):
     return loss
 
 
+@njit
 def mrcnn_mask_loss_graph(target_masks, target_class_ids, pred_masks):
     """Mask binary cross-entropy loss for the masks head.
 
@@ -1214,6 +1256,7 @@ def mrcnn_mask_loss_graph(target_masks, target_class_ids, pred_masks):
 #  Data Generator
 ############################################################
 
+@njit
 def load_image_gt(dataset, config, image_id, augmentation=None):
     """Load and return ground truth data for an image (image, mask, bounding boxes).
 
@@ -1301,6 +1344,7 @@ def load_image_gt(dataset, config, image_id, augmentation=None):
     return image, image_meta, class_ids, bbox, mask
 
 
+@njit
 def build_detection_targets(rpn_rois, gt_class_ids, gt_boxes, gt_masks, config):
     """Generate targets for training Stage 2 classifier and mask heads.
     This is not used in normal training. It's useful for debugging or to train
@@ -1457,6 +1501,7 @@ def build_detection_targets(rpn_rois, gt_class_ids, gt_boxes, gt_masks, config):
     return rois, roi_gt_class_ids, bboxes, masks
 
 
+@njit
 def build_rpn_targets(image_shape, anchors, gt_class_ids, gt_boxes, config):
     """Given the anchors and GT boxes, compute overlaps and identify positive
     anchors and deltas to refine them to match their corresponding GT boxes.
@@ -1568,6 +1613,7 @@ def build_rpn_targets(image_shape, anchors, gt_class_ids, gt_boxes, config):
     return rpn_match, rpn_bbox
 
 
+@njit
 def generate_random_rois(image_shape, count, gt_class_ids, gt_boxes):
     """Generates ROI proposals similar to what a region proposal network
     would generate.
@@ -1679,6 +1725,7 @@ class DataGenerator(KU.Sequence):
             and masks.
         """
 
+@njit
     def __init__(self, dataset, config, shuffle=True, augmentation=None,
                  random_rois=0, detection_targets=False):
 
@@ -1701,9 +1748,11 @@ class DataGenerator(KU.Sequence):
         self.batch_size = self.config.BATCH_SIZE
         self.detection_targets = detection_targets
 
+@njit
     def __len__(self):
         return int(np.ceil(len(self.image_ids) / float(self.batch_size)))
 
+@njit
     def __getitem__(self, idx):
         b = 0
         image_index = -1
@@ -1821,6 +1870,7 @@ class MaskRCNN(object):
     The actual Keras model is in the keras_model property.
     """
 
+@njit
     def __init__(self, mode, config, model_dir):
         """
         mode: Either "training" or "inference"
@@ -1834,6 +1884,7 @@ class MaskRCNN(object):
         self.set_log_dir()
         self.keras_model = self.build(mode=mode, config=config)
 
+@njit
     def build(self, mode, config):
         """Build Mask R-CNN architecture.
             input_shape: The shape of the input image.
@@ -2071,11 +2122,12 @@ class MaskRCNN(object):
 
         # Add multi-GPU support.
         if config.GPU_COUNT > 1:
-            from comics_panel_detection.mrcnn.parallel_model import ParallelModel
+            from mrcnn.parallel_model import ParallelModel
             model = ParallelModel(model, config.GPU_COUNT)
 
         return model
 
+@njit
     def find_last(self):
         """Finds the last checkpoint file of the last trained model in the
         model directory.
@@ -2105,6 +2157,7 @@ class MaskRCNN(object):
         checkpoint = os.path.join(dir_name, checkpoints[-1])
         return checkpoint
 
+@njit
     def load_weights(self, filepath, by_name=False, exclude=None):
         """Modified version of the corresponding Keras function with
         the addition of multi-GPU support and the ability to exclude
@@ -2141,6 +2194,7 @@ class MaskRCNN(object):
         # Update the log directory
         self.set_log_dir(filepath)
 
+@njit
     def get_imagenet_weights(self):
         """Downloads ImageNet trained weights from Keras.
         Returns path to weights file.
@@ -2155,6 +2209,7 @@ class MaskRCNN(object):
                                 md5_hash='a268eb855778b3df3c7506639542a6af')
         return weights_path
 
+@njit
     def compile(self, learning_rate, momentum):
         """Gets the model ready for training. Adds losses, regularization, and
         metrics. Then calls the Keras compile() function.
@@ -2200,6 +2255,7 @@ class MaskRCNN(object):
                 * self.config.LOSS_WEIGHTS.get(name, 1.))
             self.keras_model.add_metric(loss, name=name, aggregation='mean')
 
+@njit
     def set_trainable(self, layer_regex, keras_model=None, indent=0, verbose=1):
         """Sets model layers as trainable if their names match
         the given regular expression.
@@ -2237,6 +2293,7 @@ class MaskRCNN(object):
                 log("{}{:20}   ({})".format(" " * indent, layer.name,
                                             layer.__class__.__name__))
 
+@njit
     def set_log_dir(self, model_path=None):
         """Sets the model log directory and epoch counter.
 
@@ -2276,6 +2333,7 @@ class MaskRCNN(object):
         self.checkpoint_path = self.checkpoint_path.replace(
             "*epoch*", "{epoch:04d}")
 
+@njit
     def train(self, train_dataset, val_dataset, learning_rate, epochs, layers,
               augmentation=None, custom_callbacks=None, no_augmentation_sources=None):
         """Train the model.
@@ -2378,6 +2436,7 @@ class MaskRCNN(object):
         )
         self.epoch = max(self.epoch, epochs)
 
+@njit
     def mold_inputs(self, images):
         """Takes a list of images and modifies them to the format expected
         as an input to the neural network.
@@ -2417,6 +2476,7 @@ class MaskRCNN(object):
         windows = np.stack(windows)
         return molded_images, image_metas, windows
 
+@njit
     def unmold_detections(self, detections, mrcnn_mask, original_image_shape,
                           image_shape, window):
         """Reformats the detections of one image from the format of the neural
@@ -2482,6 +2542,7 @@ class MaskRCNN(object):
 
         return boxes, class_ids, scores, full_masks
 
+@njit
     def detect(self, images, verbose=0):
         """Runs the detection pipeline.
 
@@ -2540,6 +2601,7 @@ class MaskRCNN(object):
             })
         return results
 
+@njit
     def detect_molded(self, molded_images, image_metas, verbose=0):
         """Runs the detection pipeline, but expect inputs that are
         molded already. Used mostly for debugging and inspecting
@@ -2598,6 +2660,7 @@ class MaskRCNN(object):
             })
         return results
 
+@njit
     def get_anchors(self, image_shape):
         """Returns anchor pyramid for the given image size."""
         backbone_shapes = compute_backbone_shapes(self.config, image_shape)
@@ -2620,6 +2683,7 @@ class MaskRCNN(object):
             self._anchor_cache[tuple(image_shape)] = utils.norm_boxes(a, image_shape[:2])
         return self._anchor_cache[tuple(image_shape)]
 
+@njit
     def ancestor(self, tensor, name, checked=None):
         """Finds the ancestor of a TF tensor in the computation graph.
         tensor: TensorFlow symbolic tensor.
@@ -2648,6 +2712,7 @@ class MaskRCNN(object):
                 return a
         return None
 
+@njit
     def find_trainable_layer(self, layer):
         """If a layer is encapsulated by another layer, this function
         digs through the encapsulation and returns the layer that holds
@@ -2657,6 +2722,7 @@ class MaskRCNN(object):
             return self.find_trainable_layer(layer.layer)
         return layer
 
+@njit
     def get_trainable_layers(self):
         """Returns a list of layers that have weights."""
         layers = []
@@ -2669,6 +2735,7 @@ class MaskRCNN(object):
                 layers.append(l)
         return layers
 
+@njit
     def run_graph(self, images, outputs, image_metas=None):
         """Runs a sub-set of the computation graph that computes the given
         outputs.
@@ -2725,6 +2792,7 @@ class MaskRCNN(object):
 #  Data Formatting
 ############################################################
 
+@njit
 def compose_image_meta(image_id, original_image_shape, image_shape,
                        window, scale, active_class_ids):
     """Takes attributes of an image and puts them in one 1D array.
@@ -2750,6 +2818,7 @@ def compose_image_meta(image_id, original_image_shape, image_shape,
     return meta
 
 
+@njit
 def parse_image_meta(meta):
     """Parses an array that contains image attributes to its components.
     See compose_image_meta() for more details.
@@ -2774,6 +2843,7 @@ def parse_image_meta(meta):
     }
 
 
+@njit
 def parse_image_meta_graph(meta):
     """Parses a tensor that contains image attributes to its components.
     See compose_image_meta() for more details.
@@ -2798,6 +2868,7 @@ def parse_image_meta_graph(meta):
     }
 
 
+@njit
 def mold_image(images, config):
     """Expects an RGB image (or array of images) and subtracts
     the mean pixel and converts it to float. Expects image
@@ -2806,6 +2877,7 @@ def mold_image(images, config):
     return images.astype(np.float32) - config.MEAN_PIXEL
 
 
+@njit
 def unmold_image(normalized_images, config):
     """Takes a image normalized with mold() and returns the original."""
     return (normalized_images + config.MEAN_PIXEL).astype(np.uint8)
@@ -2815,6 +2887,7 @@ def unmold_image(normalized_images, config):
 #  Miscellenous Graph Functions
 ############################################################
 
+@njit
 def trim_zeros_graph(boxes, name='trim_zeros'):
     """Often boxes are represented with matrices of shape [N, 4] and
     are padded with zeros. This removes zero boxes.
@@ -2827,6 +2900,7 @@ def trim_zeros_graph(boxes, name='trim_zeros'):
     return boxes, non_zeros
 
 
+@njit
 def batch_pack_graph(x, counts, num_rows):
     """Picks different number of values from each row
     in x depending on the values in counts.
@@ -2837,6 +2911,7 @@ def batch_pack_graph(x, counts, num_rows):
     return tf.concat(outputs, axis=0)
 
 
+@njit
 def norm_boxes_graph(boxes, shape):
     """Converts boxes from pixel coordinates to normalized coordinates.
     boxes: [..., (y1, x1, y2, x2)] in pixel coordinates
@@ -2854,6 +2929,7 @@ def norm_boxes_graph(boxes, shape):
     return tf.divide(boxes - shift, scale)
 
 
+@njit
 def denorm_boxes_graph(boxes, shape):
     """Converts boxes from normalized coordinates to pixel coordinates.
     boxes: [..., (y1, x1, y2, x2)] in normalized coordinates
