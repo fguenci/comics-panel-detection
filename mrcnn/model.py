@@ -61,7 +61,7 @@ class BatchNorm(KL.BatchNormalization):
     so this layer is often frozen (via setting in Config class) and functions
     as linear layer.
     """
-@njit
+    @njit
     def call(self, inputs, training=None):
         """
         Note about training values:
@@ -277,14 +277,14 @@ class ProposalLayer(KE.Layer):
         Proposals in normalized coordinates [batch, rois, (y1, x1, y2, x2)]
     """
 
-@njit
+    @njit
     def __init__(self, proposal_count, nms_threshold, config=None, **kwargs):
         super(ProposalLayer, self).__init__(**kwargs)
         self.config = config
         self.proposal_count = proposal_count
         self.nms_threshold = nms_threshold
 
-@njit
+    @njit
     def get_config(self):
         config = super(ProposalLayer, self).get_config()
         config["config"] = self.config.to_dict()
@@ -292,7 +292,7 @@ class ProposalLayer(KE.Layer):
         config["nms_threshold"] = self.nms_threshold
         return config
 
-@njit
+    @njit
     def call(self, inputs):
         # Box Scores. Use the foreground class confidence. [Batch, num_rois, 1]
         scores = inputs[0][:, :, 1]
@@ -354,7 +354,7 @@ class ProposalLayer(KE.Layer):
             proposals.set_shape(out_shape)
         return proposals
 
-@njit
+    @njit
     def compute_output_shape(self, input_shape):
         return None, self.proposal_count, 4
 
@@ -389,18 +389,18 @@ class PyramidROIAlign(KE.Layer):
     constructor.
     """
 
-@njit
+    @njit
     def __init__(self, pool_shape, **kwargs):
         super(PyramidROIAlign, self).__init__(**kwargs)
         self.pool_shape = tuple(pool_shape)
 
-@njit
+    @njit
     def get_config(self):
         config = super(PyramidROIAlign, self).get_config()
         config['pool_shape'] = self.pool_shape
         return config
 
-@njit
+    @njit
     def call(self, inputs):
         # Crop boxes [batch, num_boxes, (y1, x1, y2, x2)] in normalized coords
         boxes = inputs[0]
@@ -482,7 +482,7 @@ class PyramidROIAlign(KE.Layer):
         pooled = tf.reshape(pooled, shape)
         return pooled
 
-@njit
+    @njit
     def compute_output_shape(self, input_shape):
         return input_shape[0][:2] + self.pool_shape + (input_shape[2][-1], )
 
@@ -683,18 +683,18 @@ class DetectionTargetLayer(KE.Layer):
     Note: Returned arrays might be zero padded if not enough target ROIs.
     """
 
-@njit
+    @njit
     def __init__(self, config, **kwargs):
         super(DetectionTargetLayer, self).__init__(**kwargs)
         self.config = config
 
-@njit
+    @njit
     def get_config(self):
         config = super(DetectionTargetLayer, self).get_config()
         config["config"] = self.config.to_dict()
         return config
 
-@njit
+    @njit
     def call(self, inputs):
         proposals = inputs[0]
         gt_class_ids = inputs[1]
@@ -711,7 +711,7 @@ class DetectionTargetLayer(KE.Layer):
             self.config.IMAGES_PER_GPU, names=names)
         return outputs
 
-@njit
+    @njit
     def compute_output_shape(self, input_shape):
         return [
             (None, self.config.TRAIN_ROIS_PER_IMAGE, 4),  # rois
@@ -721,7 +721,7 @@ class DetectionTargetLayer(KE.Layer):
              self.config.MASK_SHAPE[1])  # masks
         ]
 
-@njit
+    @njit
     def compute_mask(self, inputs, mask=None):
         return [None, None, None, None]
 
@@ -778,7 +778,7 @@ def refine_detections_graph(rois, probs, deltas, window, config):
     pre_nms_rois = tf.gather(refined_rois,   keep)
     unique_pre_nms_class_ids = tf.unique(pre_nms_class_ids)[0]
 
-@njit
+    @njit
     def nms_keep_map(class_id):
         """Apply Non-Maximum Suppression on ROIs of the given class."""
         # Indices of ROIs of the given class
@@ -839,18 +839,18 @@ class DetectionLayer(KE.Layer):
     coordinates are normalized.
     """
 
-@njit
+    @njit
     def __init__(self, config=None, **kwargs):
         super(DetectionLayer, self).__init__(**kwargs)
         self.config = config
 
-@njit
+    @njit
     def get_config(self):
         config = super(DetectionLayer, self).get_config()
         config["config"] = self.config.to_dict()
         return config
 
-@njit
+    @njit
     def call(self, inputs):
         rois = inputs[0]
         mrcnn_class = inputs[1]
@@ -878,7 +878,7 @@ class DetectionLayer(KE.Layer):
             detections_batch,
             [self.config.BATCH_SIZE, self.config.DETECTION_MAX_INSTANCES, 6])
 
-@njit
+    @njit
     def compute_output_shape(self, input_shape):
         return (None, self.config.DETECTION_MAX_INSTANCES, 6)
 
@@ -1297,6 +1297,7 @@ def load_image_gt(dataset, config, image_id, augmentation=None):
                            "Fliplr", "Flipud", "CropAndPad",
                            "Affine", "PiecewiseAffine"]
 
+        @njit
         def hook(images, augmenter, parents, default):
             """Determines which augmenters to apply to masks."""
             return augmenter.__class__.__name__ in MASK_AUGMENTERS
@@ -1725,7 +1726,7 @@ class DataGenerator(KU.Sequence):
             and masks.
         """
 
-@njit
+    @njit
     def __init__(self, dataset, config, shuffle=True, augmentation=None,
                  random_rois=0, detection_targets=False):
 
@@ -1748,11 +1749,11 @@ class DataGenerator(KU.Sequence):
         self.batch_size = self.config.BATCH_SIZE
         self.detection_targets = detection_targets
 
-@njit
+    @njit
     def __len__(self):
         return int(np.ceil(len(self.image_ids) / float(self.batch_size)))
 
-@njit
+    @njit
     def __getitem__(self, idx):
         b = 0
         image_index = -1
@@ -1870,7 +1871,7 @@ class MaskRCNN(object):
     The actual Keras model is in the keras_model property.
     """
 
-@njit
+    @njit
     def __init__(self, mode, config, model_dir):
         """
         mode: Either "training" or "inference"
@@ -1884,7 +1885,7 @@ class MaskRCNN(object):
         self.set_log_dir()
         self.keras_model = self.build(mode=mode, config=config)
 
-@njit
+    @njit
     def build(self, mode, config):
         """Build Mask R-CNN architecture.
             input_shape: The shape of the input image.
@@ -2127,7 +2128,7 @@ class MaskRCNN(object):
 
         return model
 
-@njit
+    @njit
     def find_last(self):
         """Finds the last checkpoint file of the last trained model in the
         model directory.
@@ -2157,7 +2158,7 @@ class MaskRCNN(object):
         checkpoint = os.path.join(dir_name, checkpoints[-1])
         return checkpoint
 
-@njit
+    @njit
     def load_weights(self, filepath, by_name=False, exclude=None):
         """Modified version of the corresponding Keras function with
         the addition of multi-GPU support and the ability to exclude
@@ -2194,7 +2195,7 @@ class MaskRCNN(object):
         # Update the log directory
         self.set_log_dir(filepath)
 
-@njit
+    @njit
     def get_imagenet_weights(self):
         """Downloads ImageNet trained weights from Keras.
         Returns path to weights file.
@@ -2209,7 +2210,7 @@ class MaskRCNN(object):
                                 md5_hash='a268eb855778b3df3c7506639542a6af')
         return weights_path
 
-@njit
+    @njit
     def compile(self, learning_rate, momentum):
         """Gets the model ready for training. Adds losses, regularization, and
         metrics. Then calls the Keras compile() function.
@@ -2255,7 +2256,7 @@ class MaskRCNN(object):
                 * self.config.LOSS_WEIGHTS.get(name, 1.))
             self.keras_model.add_metric(loss, name=name, aggregation='mean')
 
-@njit
+    @njit
     def set_trainable(self, layer_regex, keras_model=None, indent=0, verbose=1):
         """Sets model layers as trainable if their names match
         the given regular expression.
@@ -2293,7 +2294,7 @@ class MaskRCNN(object):
                 log("{}{:20}   ({})".format(" " * indent, layer.name,
                                             layer.__class__.__name__))
 
-@njit
+    @njit
     def set_log_dir(self, model_path=None):
         """Sets the model log directory and epoch counter.
 
@@ -2333,7 +2334,7 @@ class MaskRCNN(object):
         self.checkpoint_path = self.checkpoint_path.replace(
             "*epoch*", "{epoch:04d}")
 
-@njit
+    @njit
     def train(self, train_dataset, val_dataset, learning_rate, epochs, layers,
               augmentation=None, custom_callbacks=None, no_augmentation_sources=None):
         """Train the model.
@@ -2436,7 +2437,7 @@ class MaskRCNN(object):
         )
         self.epoch = max(self.epoch, epochs)
 
-@njit
+    @njit
     def mold_inputs(self, images):
         """Takes a list of images and modifies them to the format expected
         as an input to the neural network.
@@ -2476,7 +2477,7 @@ class MaskRCNN(object):
         windows = np.stack(windows)
         return molded_images, image_metas, windows
 
-@njit
+    @njit
     def unmold_detections(self, detections, mrcnn_mask, original_image_shape,
                           image_shape, window):
         """Reformats the detections of one image from the format of the neural
@@ -2542,7 +2543,7 @@ class MaskRCNN(object):
 
         return boxes, class_ids, scores, full_masks
 
-@njit
+    @njit
     def detect(self, images, verbose=0):
         """Runs the detection pipeline.
 
@@ -2601,7 +2602,7 @@ class MaskRCNN(object):
             })
         return results
 
-@njit
+    @njit
     def detect_molded(self, molded_images, image_metas, verbose=0):
         """Runs the detection pipeline, but expect inputs that are
         molded already. Used mostly for debugging and inspecting
@@ -2660,7 +2661,7 @@ class MaskRCNN(object):
             })
         return results
 
-@njit
+    @njit
     def get_anchors(self, image_shape):
         """Returns anchor pyramid for the given image size."""
         backbone_shapes = compute_backbone_shapes(self.config, image_shape)
@@ -2683,7 +2684,7 @@ class MaskRCNN(object):
             self._anchor_cache[tuple(image_shape)] = utils.norm_boxes(a, image_shape[:2])
         return self._anchor_cache[tuple(image_shape)]
 
-@njit
+    @njit
     def ancestor(self, tensor, name, checked=None):
         """Finds the ancestor of a TF tensor in the computation graph.
         tensor: TensorFlow symbolic tensor.
@@ -2712,7 +2713,7 @@ class MaskRCNN(object):
                 return a
         return None
 
-@njit
+    @njit
     def find_trainable_layer(self, layer):
         """If a layer is encapsulated by another layer, this function
         digs through the encapsulation and returns the layer that holds
@@ -2722,7 +2723,7 @@ class MaskRCNN(object):
             return self.find_trainable_layer(layer.layer)
         return layer
 
-@njit
+    @njit
     def get_trainable_layers(self):
         """Returns a list of layers that have weights."""
         layers = []
@@ -2735,7 +2736,7 @@ class MaskRCNN(object):
                 layers.append(l)
         return layers
 
-@njit
+    @njit
     def run_graph(self, images, outputs, image_metas=None):
         """Runs a sub-set of the computation graph that computes the given
         outputs.
