@@ -13,6 +13,7 @@ import re
 import math
 from collections import OrderedDict
 import multiprocessing
+from numba.core.decorators import njit
 import numpy as np
 import tensorflow as tf
 import tensorflow.keras as keras
@@ -2276,6 +2277,7 @@ class MaskRCNN(object):
         self.checkpoint_path = self.checkpoint_path.replace(
             "*epoch*", "{epoch:04d}")
 
+    @njit
     def train(self, train_dataset, val_dataset, learning_rate, epochs, layers,
               augmentation=None, custom_callbacks=None, no_augmentation_sources=None):
         """Train the model.
