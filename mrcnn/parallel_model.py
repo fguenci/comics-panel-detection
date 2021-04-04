@@ -14,9 +14,9 @@ https://github.com/fchollet/keras/blob/master/keras/utils/training_utils.py
 """
 
 import tensorflow as tf
-import keras.backend as K
-import keras.layers as KL
-import keras.models as KM
+import tensorflow.keras.backend as K
+import tensorflow.keras.layers as KL
+import tensorflow.keras.models as KM
 
 
 class ParallelModel(KM.Model):
@@ -27,16 +27,21 @@ class ParallelModel(KM.Model):
     outputs.
     """
 
+    inner_model = None
+    gpu_count = None
+    
     def __init__(self, keras_model, gpu_count):
         """Class constructor.
         keras_model: The Keras model to parallelize
         gpu_count: Number of GPUs. Must be > 1
         """
+        super(ParallelModel, self).__init__(inputs=keras_model.inputs,
+                                            outputs=self.make_parallel(keras_model, gpu_count))
         self.inner_model = keras_model
         self.gpu_count = gpu_count
-        merged_outputs = self.make_parallel()
-        super(ParallelModel, self).__init__(inputs=self.inner_model.inputs,
-                                            outputs=merged_outputs)
+        # merged_outputs = self.make_parallel()
+        # super(ParallelModel, self).__init__(inputs=self.inner_model.inputs,
+        #                                    outputs=merged_outputs)
 
     def __getattribute__(self, attrname):
         """Redirect loading and saving methods to the inner model. That's where
@@ -51,28 +56,28 @@ class ParallelModel(KM.Model):
         super(ParallelModel, self).summary(*args, **kwargs)
         self.inner_model.summary(*args, **kwargs)
 
-    def make_parallel(self):
+    def make_parallel(self, inner_model, gpu_count):
         """Creates a new wrapper model that consists of multiple replicas of
         the original model placed on different GPUs.
         """
         # Slice inputs. Slice inputs on the CPU to avoid sending a copy
         # of the full inputs to all GPUs. Saves on bandwidth and memory.
-        input_slices = {name: tf.split(x, self.gpu_count)
-                        for name, x in zip(self.inner_model.input_names,
-                                           self.inner_model.inputs)}
+        input_slices = {name: tf.split(x, gpu_count)
+                        for name, x in zip(inner_model.input_names,
+                                           inner_model.inputs)}
 
-        output_names = self.inner_model.output_names
+        output_names = inner_model.output_names
         outputs_all = []
-        for i in range(len(self.inner_model.outputs)):
+        for i in range(len(inner_model.outputs)):
             outputs_all.append([])
 
         # Run the model call() on each GPU to place the ops there
-        for i in range(self.gpu_count):
+        for i in range(gpu_count):
             with tf.device('/gpu:%d' % i):
                 with tf.name_scope('tower_%d' % i):
                     # Run a slice of inputs through this replica
-                    zipped_inputs = zip(self.inner_model.input_names,
-                                        self.inner_model.inputs)
+                    zipped_inputs = zip(inner_model.input_names,
+                                        inner_model.inputs)
                     inputs = [
                         KL.Lambda(lambda s: input_slices[name][i],
                                   output_shape=lambda s: (None,) + s[1:])(tensor)
@@ -113,9 +118,10 @@ if __name__ == "__main__":
 
     import os
     import numpy as np
-    import keras.optimizers
-    from keras.datasets import mnist
-    from keras.preprocessing.image import ImageDataGenerator
+    from tensorflow.python.keras.optimizer_v2.gradient_descent import SGD
+    from tensorflow.keras.callbacks import TensorBoard
+    from tensorflow.keras.datasets import mnist
+    from tensorflow.keras.preprocessing.image import ImageDataGenerator
 
     GPU_COUNT = 2
 
@@ -129,7 +135,7 @@ if __name__ == "__main__":
         # Reset default graph. Keras leaves old ops in the graph,
         # which are ignored for execution but clutter graph
         # visualization in TensorBoard.
-        tf.reset_default_graph()
+        # tf.reset_default_graph()
 
         inputs = KL.Input(shape=x_train.shape[1:], name="input_image")
         x = KL.Conv2D(32, (3, 3), activation='relu', padding="same",
@@ -141,7 +147,9 @@ if __name__ == "__main__":
         x = KL.Dense(128, activation='relu', name="dense1")(x)
         x = KL.Dense(num_classes, activation='softmax', name="dense2")(x)
 
-        return KM.Model(inputs, x, "digit_classifier_model")
+        model =  KM.Model(inputs, x, "digit_classifier_model")
+        model.input_names=['A','B']
+        return model
 
     # Load MNIST Data
     (x_train, y_train), (x_test, y_test) = mnist.load_data()
@@ -158,7 +166,7 @@ if __name__ == "__main__":
     # Add multi-GPU support.
     model = ParallelModel(model, GPU_COUNT)
 
-    optimizer = keras.optimizers.SGD(lr=0.01, momentum=0.9, clipnorm=5.0)
+    optimizer = SGD(lr=0.01, momentum=0.9, clipnorm=5.0)
 
     model.compile(loss='sparse_categorical_crossentropy',
                   optimizer=optimizer, metrics=['accuracy'])
@@ -170,6 +178,6 @@ if __name__ == "__main__":
         datagen.flow(x_train, y_train, batch_size=64),
         steps_per_epoch=50, epochs=10, verbose=1,
         validation_data=(x_test, y_test),
-        callbacks=[keras.callbacks.TensorBoard(log_dir=MODEL_DIR,
+        callbacks=[TensorBoard(log_dir=MODEL_DIR,
                                                write_graph=True)]
     )
