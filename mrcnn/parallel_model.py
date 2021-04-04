@@ -27,21 +27,17 @@ class ParallelModel(KM.Model):
     outputs.
     """
 
-    inner_model = None
-    gpu_count = None
-    
     def __init__(self, keras_model, gpu_count):
         """Class constructor.
         keras_model: The Keras model to parallelize
         gpu_count: Number of GPUs. Must be > 1
         """
-        super(ParallelModel, self).__init__(inputs=keras_model.inputs,
-                                            outputs=self.make_parallel(keras_model, gpu_count))
+        super(ParallelModel, self).__init__()
         self.inner_model = keras_model
         self.gpu_count = gpu_count
-        # merged_outputs = self.make_parallel()
-        # super(ParallelModel, self).__init__(inputs=self.inner_model.inputs,
-        #                                    outputs=merged_outputs)
+        merged_outputs = self.make_parallel(keras_model, gpu_count)
+        super(ParallelModel, self).__init__(inputs=self.inner_model.inputs,
+                                            outputs=merged_outputs)
 
     def __getattribute__(self, attrname):
         """Redirect loading and saving methods to the inner model. That's where
@@ -60,6 +56,9 @@ class ParallelModel(KM.Model):
         """Creates a new wrapper model that consists of multiple replicas of
         the original model placed on different GPUs.
         """
+        self.inner_model = inner_model
+        self.gpu_count = gpu_count
+
         # Slice inputs. Slice inputs on the CPU to avoid sending a copy
         # of the full inputs to all GPUs. Saves on bandwidth and memory.
         input_slices = {name: tf.split(x, gpu_count)
@@ -83,7 +82,7 @@ class ParallelModel(KM.Model):
                                   output_shape=lambda s: (None,) + s[1:])(tensor)
                         for name, tensor in zipped_inputs]
                     # Create the model replica and get the outputs
-                    outputs = self.inner_model(inputs)
+                    outputs = inner_model(inputs)
                     if not isinstance(outputs, list):
                         outputs = [outputs]
                     # Save the outputs for merging back together later
