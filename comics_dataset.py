@@ -16,12 +16,11 @@ import fnmatch
 from skimage import draw
 from pprint import pprint
 from xml.dom import minidom
-from numba import njit
+
 
 # class that defines and loads the kangaroo dataset
 class ComicsDataset(Dataset):
     # load the dataset definitions
-    @njit
     def load_dataset(self, dataset_dir, is_train=True):
         
         def extract_polygon():
@@ -124,7 +123,6 @@ class ComicsDataset(Dataset):
                                polygons=polygons)
         
     # load the masks for an image
-    @njit
     def load_mask(self, image_id):
         # get details of image
         info = self.image_info[image_id]
